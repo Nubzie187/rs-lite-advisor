@@ -1,0 +1,115 @@
+{
+  "combat_brackets": [
+    {
+      "min_level": 3,
+      "max_level": 20,
+      "name": "Early Game",
+      "weapons": ["Bronze Scimitar", "Iron Scimitar"],
+      "armor": "Leather Armor (F2P) or Leather Armor (P2P)",
+      "training_spots": [
+        {
+          "name": "Lumbridge Cows",
+          "location": "Lumbridge cow field",
+          "notes": "Safe, close to bank, good for beginners"
+        },
+        {
+          "name": "Al Kharid Warriors",
+          "location": "Al Kharid Palace",
+          "notes": "F2P, slightly better XP than cows"
+        }
+      ]
+    },
+    {
+      "min_level": 21,
+      "max_level": 40,
+      "name": "Low Level",
+      "weapons": ["Steel Scimitar", "Mithril Scimitar"],
+      "armor": "Steel Armor (F2P) or Mithril Armor (P2P)",
+      "training_spots": [
+        {
+          "name": "Al Kharid Warriors",
+          "location": "Al Kharid Palace",
+          "notes": "F2P, good XP rates, close to bank"
+        },
+        {
+          "name": "Rock Crabs",
+          "location": "Rellekka (members)",
+          "notes": "P2P, high HP, good XP, AFK-friendly"
+        }
+      ]
+    },
+    {
+      "min_level": 41,
+      "max_level": 60,
+      "name": "Mid Level",
+      "weapons": ["Rune Scimitar", "Dragon Scimitar (members)"],
+      "armor": "Rune Armor (F2P) or Dragon Armor (P2P)",
+      "training_spots": [
+        {
+          "name": "Sand Crabs",
+          "location": "Kourend (members)",
+          "notes": "P2P, excellent XP, very AFK, requires 15 combat"
+        },
+        {
+          "name": "Ammonite Crabs",
+          "location": "Fossil Island (members)",
+          "notes": "P2P, best early-game XP, requires 15 combat"
+        },
+        {
+          "name": "Hill Giants",
+          "location": "Edgeville Dungeon",
+          "notes": "F2P/P2P, good drops, requires 28 combat"
+        }
+      ]
+    },
+    {
+      "min_level": 61,
+      "max_level": 85,
+      "name": "High Level",
+      "weapons": ["Dragon Scimitar", "Abyssal Whip (members)", "Tentacle Whip (members)"],
+      "armor": "Dragon Armor or Barrows Armor (members)",
+      "training_spots": [
+        {
+          "name": "Nightmare Zone",
+          "location": "Yanille (members)",
+          "notes": "P2P, best AFK training, requires quests"
+        },
+        {
+          "name": "Slayer Tasks",
+          "location": "Various (members)",
+          "notes": "P2P, train Slayer + combat, profitable"
+        },
+        {
+          "name": "Ammonite Crabs",
+          "location": "Fossil Island (members)",
+          "notes": "P2P, still viable up to 70+ stats"
+        }
+      ]
+    },
+    {
+      "min_level": 86,
+      "max_level": 126,
+      "name": "Very High Level",
+      "weapons": ["Abyssal Whip", "Tentacle Whip", "Rapier (members)", "Scythe (members)"],
+      "armor": "Barrows Armor or Bandos Armor (members)",
+      "training_spots": [
+        {
+          "name": "Nightmare Zone",
+          "location": "Yanille (members)",
+          "notes": "P2P, best AFK training, use Dharok's for max XP"
+        },
+        {
+          "name": "Slayer Tasks",
+          "location": "Various (members)",
+          "notes": "P2P, train Slayer + combat, very profitable at 85+"
+        },
+        {
+          "name": "Chinning",
+          "location": "Monkey Madness II tunnels (members)",
+          "notes": "P2P, best Ranged XP, expensive but fast"
+        }
+      ]
+    }
+  ]
+}
+

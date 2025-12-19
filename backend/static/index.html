@@ -240,6 +240,44 @@
         </section>
 
         <section class="profile-section">
+            <h2>Profile Settings</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label for="membership-select" style="display: block; font-weight: 600; color: #555; margin-bottom: 8px;">Membership</label>
+                    <select 
+                        id="membership-select"
+                        style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem;"
+                    >
+                        <option value="f2p">Free-to-Play</option>
+                        <option value="p2p">Members</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: flex-end;">
+                    <button id="save-membership-btn" onclick="saveMembership()" style="padding: 12px 24px; width: 100%;">Save Membership</button>
+                </div>
+            </div>
+            <div id="membership-message" class="message"></div>
+        </section>
+
+        <section class="profile-section">
+            <h2>Import from Hiscores</h2>
+            <div style="display: flex; gap: 10px; align-items: flex-end; margin-bottom: 15px;">
+                <div style="flex: 1;">
+                    <label for="player-name" style="display: block; font-weight: 600; color: #555; margin-bottom: 8px;">Player Name</label>
+                    <input 
+                        type="text" 
+                        id="player-name" 
+                        placeholder="Enter RuneScape username"
+                        style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem;"
+                        onkeypress="if(event.key === 'Enter') importHiscores()"
+                    />
+                </div>
+                <button id="import-btn" onclick="importHiscores()" style="padding: 12px 24px; white-space: nowrap;">Import from Hiscores</button>
+            </div>
+            <div id="import-message" class="message"></div>
+        </section>
+
+        <section class="profile-section">
             <div class="button-group">
                 <button id="get-advice-btn" onclick="getAdvice()">Get Advice</button>
             </div>
@@ -265,6 +303,16 @@
         async function loadProfile() {
             try {
                 const response = await fetch(`${API_URL}/profile`);
+                
+                if (!response.ok) {
+                    // Handle non-200 responses gracefully
+                    const errorText = await response.text();
+                    console.error('Failed to load profile:', response.status, errorText);
+                    document.getElementById('profile-content').innerHTML = 
+                        '<div class="message error show">Failed to load profile</div>';
+                    return;
+                }
+                
                 const profile = await response.json();
                 displayProfile(profile);
             } catch (error) {
@@ -277,12 +325,28 @@
         function displayProfile(profile) {
             const content = document.getElementById('profile-content');
             
+            // Update player name input if it exists
+            const playerNameInput = document.getElementById('player-name');
+            if (playerNameInput) {
+                playerNameInput.value = profile.player_name || '';
+            }
+            
+            // Update membership dropdown if it exists
+            const membershipSelect = document.getElementById('membership-select');
+            if (membershipSelect) {
+                membershipSelect.value = profile.membership || 'f2p';
+            }
+            
             const skillsList = Object.entries(profile.skills || {})
                 .map(([skill, level]) => `<span class="skill-badge">${skill}: ${level}</span>`)
                 .join('');
 
             content.innerHTML = `
                 <div class="profile-info">
+                    <div class="profile-item">
+                        <label>Player Name</label>
+                        <div class="value">${profile.player_name || 'Not set'}</div>
+                    </div>
                     <div class="profile-item">
                         <label>Game Mode</label>
                         <div class="value">${profile.game_mode || 'main'}</div>
@@ -305,6 +369,106 @@
                     <div class="skills-list">${skillsList || 'No skills set'}</div>
                 </div>
             `;
+        }
+
+        async function saveMembership() {
+            const membershipSelect = document.getElementById('membership-select');
+            const saveBtn = document.getElementById('save-membership-btn');
+            const membershipMessage = document.getElementById('membership-message');
+            const membership = membershipSelect.value;
+
+            saveBtn.disabled = true;
+            membershipMessage.className = 'message';
+            membershipMessage.textContent = 'Saving...';
+
+            try {
+                // Get current profile
+                const profileResponse = await fetch(`${API_URL}/profile`);
+                if (!profileResponse.ok) {
+                    throw new Error('Failed to load profile');
+                }
+                const profile = await profileResponse.json();
+
+                // Update membership
+                profile.membership = membership;
+
+                // Save profile
+                const saveResponse = await fetch(`${API_URL}/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(profile),
+                });
+
+                if (!saveResponse.ok) {
+                    const errorText = await saveResponse.text();
+                    throw new Error(errorText || 'Failed to save membership');
+                }
+
+                membershipMessage.className = 'message show';
+                membershipMessage.textContent = 'Membership saved successfully!';
+
+                // Refresh profile display
+                await loadProfile();
+            } catch (error) {
+                console.error('Failed to save membership:', error);
+                membershipMessage.className = 'message error show';
+                membershipMessage.textContent = error.message || 'Error saving membership';
+            } finally {
+                saveBtn.disabled = false;
+            }
+        }
+
+        async function importHiscores() {
+            const playerNameInput = document.getElementById('player-name');
+            const importBtn = document.getElementById('import-btn');
+            const importMessage = document.getElementById('import-message');
+            const playerName = playerNameInput.value.trim();
+
+            if (!playerName) {
+                importMessage.className = 'message error show';
+                importMessage.textContent = 'Please enter a player name';
+                return;
+            }
+
+            importBtn.disabled = true;
+            importMessage.className = 'message';
+            importMessage.textContent = 'Importing hiscores...';
+
+            try {
+                const response = await fetch(`${API_URL}/import/hiscores`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ player_name: playerName }),
+                });
+
+                if (!response.ok) {
+                    // Read response.text() when response is not ok
+                    const errorText = await response.text();
+                    console.error('Hiscores import failed:', response.status, errorText);
+                    importMessage.className = 'message error show';
+                    importMessage.textContent = errorText || 'Failed to import hiscores';
+                    return;
+                }
+
+                // Only call response.json() when response.ok === true
+                const data = await response.json();
+                importMessage.className = 'message show';
+                importMessage.textContent = data.message || 'Hiscores imported successfully!';
+
+                // Refresh profile and advice
+                await loadProfile();
+                await getAdvice();
+            } catch (error) {
+                console.error('Failed to import hiscores:', error);
+                importMessage.className = 'message error show';
+                importMessage.textContent = error.message || 'Error importing hiscores';
+            } finally {
+                importBtn.disabled = false;
+            }
         }
 
         async function getAdvice() {

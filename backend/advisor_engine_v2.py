@@ -317,7 +317,7 @@ def get_advice(profile: Profile) -> list[AdviceItem]:
     Advisor engine with quality enforcement:
     - Exactly 3 items: 1 Gear/Upgrade, 1 Training Method, 1 Quest/Unlock
     - No duplicate primary actions
-    - No filler steps (all steps change account state)
+    - No filler steps
     - Comparative reasoning for each recommendation
     """
     # Load combat progression data
@@ -333,91 +333,48 @@ def get_advice(profile: Profile) -> list[AdviceItem]:
     # Get combat bracket
     bracket = get_combat_bracket(combat_level, progression_data)
     
-    # Enforce 3 slots: Gear, Training, Quest
+    # Generate one of each type
+    gear_item = get_gear_recommendation(bracket, profile.membership, combat_level, attack, strength, defence)
+    training_item = get_training_recommendation(bracket, profile.membership, combat_level, attack, strength, defence)
+    quest_item = get_quest_recommendation(profile, combat_level, total_level)
+    
     items = []
     primary_actions = set()
     
-    # Slot 1: Gear/Upgrade (always include)
-    gear_item = get_gear_recommendation(bracket, profile.membership, combat_level, attack, strength, defence)
-    if gear_item:
-        primary_action = get_primary_action(gear_item)
-        items.append(gear_item)
-        primary_actions.add(primary_action)
-    
-    # Slot 2: Training Method (always include)
-    training_item = get_training_recommendation(bracket, profile.membership, combat_level, attack, strength, defence)
-    if training_item:
-        primary_action = get_primary_action(training_item)
-        # Check for duplicate with gear
-        if primary_action not in primary_actions:
-            items.append(training_item)
-            primary_actions.add(primary_action)
-        else:
-            # Use alternative training spot
-            if bracket and bracket.get("training_spots") and len(bracket["training_spots"]) > 1:
-                spot = bracket["training_spots"][1]
-                spot_name = spot.get("name", "Training spot")
-                location = spot.get("location", "")
-                if spot_name and location:
-                    alt_training = AdviceItem(
-                        title=f"Train at {spot_name}",
-                        why_now=f"At {combat_level} combat, train at {spot_name} ({location}) for combat XP.",
-                        steps=[
-                            f"Travel to {location}",
-                            f"Equip best available combat gear",
-                            f"Train at {spot_name} to gain combat XP",
-                            f"Level up Attack ({attack}), Strength ({strength}), and Defence ({defence})"
-                        ],
-                        why_over_alternatives=f"{spot_name} is an alternative training spot. Better than lower-level spots and provides good XP rates."
-                    )
-                    primary_action = get_primary_action(alt_training)
-                    if primary_action not in primary_actions:
-                        items.append(alt_training)
-                        primary_actions.add(primary_action)
-    
-    # Slot 3: Quest/Unlock (always include)
-    quest_item = get_quest_recommendation(profile, combat_level, total_level)
-    if quest_item:
-        primary_action = get_primary_action(quest_item)
-        # Check for duplicate
-        if primary_action not in primary_actions:
-            items.append(quest_item)
-            primary_actions.add(primary_action)
-        else:
-            # Use alternative quest
-            if profile.membership == "f2p":
-                alt_quest = AdviceItem(
-                    title="Complete Lost City Quest",
-                    why_now=f"Complete Lost City quest to unlock Dragon weapons and prepare for Dragon Slayer.",
-                    steps=[
-                        "Train Crafting to 31+",
-                        "Start quest by talking to the Shanty Pass guard",
-                        "Navigate through the Lost City",
-                        "Claim quest rewards and Dragon weapon unlocks"
-                    ],
-                    requirements=["Crafting 31+"],
-                    rewards=["Dragon Dagger unlock", "Dragon Longsword unlock", "Access to Lost City"],
-                    why_over_alternatives="Lost City is a prerequisite for Dragon Slayer and unlocks Dragon weapons. Better than other early quests for combat progression."
-                )
-            else:
-                alt_quest = AdviceItem(
-                    title="Complete Tree Gnome Village Quest",
-                    why_now=f"Complete Tree Gnome Village quest for combat XP and Spirit Tree access.",
-                    steps=[
-                        "Meet requirements: 10+ Attack recommended",
-                        "Start quest by talking to King Bolren in Tree Gnome Village",
-                        "Complete quest objectives",
-                        "Claim combat XP rewards and Spirit Tree unlock"
-                    ],
-                    requirements=["10+ Attack recommended"],
-                    rewards=["Combat XP", "Spirit Tree transportation unlock"],
-                    why_over_alternatives="Tree Gnome Village provides early combat XP and unlocks Spirit Tree transportation. Better than other early quests for utility."
-                )
-            primary_action = get_primary_action(alt_quest)
+    # Add items in order, checking for duplicates
+    for item in [gear_item, training_item, quest_item]:
+        if item:
+            primary_action = get_primary_action(item)
             if primary_action not in primary_actions:
-                items.append(alt_quest)
+                items.append(item)
                 primary_actions.add(primary_action)
     
-    # Ensure exactly 3 items
+    # Ensure we have exactly 3 items
+    while len(items) < 3:
+        # Fallback: generate missing type
+        if not gear_item or get_primary_action(gear_item) in primary_actions:
+            gear_item = get_gear_recommendation(bracket, profile.membership, combat_level, attack, strength, defence)
+            if gear_item and get_primary_action(gear_item) not in primary_actions:
+                items.append(gear_item)
+                primary_actions.add(get_primary_action(gear_item))
+                continue
+        
+        if not training_item or get_primary_action(training_item) in primary_actions:
+            training_item = get_training_recommendation(bracket, profile.membership, combat_level, attack, strength, defence)
+            if training_item and get_primary_action(training_item) not in primary_actions:
+                items.append(training_item)
+                primary_actions.add(get_primary_action(training_item))
+                continue
+        
+        if not quest_item or get_primary_action(quest_item) in primary_actions:
+            quest_item = get_quest_recommendation(profile, combat_level, total_level)
+            if quest_item and get_primary_action(quest_item) not in primary_actions:
+                items.append(quest_item)
+                primary_actions.add(get_primary_action(quest_item))
+                continue
+        
+        # Last resort: add any available item
+        break
+    
     return items[:3]
 

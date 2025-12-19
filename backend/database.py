@@ -12,6 +12,7 @@ class ProfileModel(Base):
     __tablename__ = "profiles"
 
     id = Column(Integer, primary_key=True, index=True)
+    player_name = Column(String, default="")
     game_mode = Column(String, default="main")
     membership = Column(String, default="f2p")
     goals = Column(Text, nullable=True)  # JSON array as string
@@ -35,6 +36,7 @@ def init_db():
 def get_default_profile() -> Profile:
     """Return a default profile"""
     return Profile(
+        player_name="",
         game_mode="main",
         membership="f2p",
         goals=[],
@@ -62,6 +64,7 @@ def get_profile() -> Profile:
             return default
         
         return Profile(
+            player_name=profile_row.player_name or "",
             game_mode=profile_row.game_mode,
             membership=profile_row.membership,
             goals=json.loads(profile_row.goals) if profile_row.goals else [],
@@ -80,6 +83,7 @@ def save_profile(profile: Profile):
         
         if profile_row:
             # Update existing
+            profile_row.player_name = profile.player_name
             profile_row.game_mode = profile.game_mode
             profile_row.membership = profile.membership
             profile_row.goals = json.dumps(profile.goals)
@@ -88,6 +92,7 @@ def save_profile(profile: Profile):
         else:
             # Create new
             profile_row = ProfileModel(
+                player_name=profile.player_name,
                 game_mode=profile.game_mode,
                 membership=profile.membership,
                 goals=json.dumps(profile.goals),
