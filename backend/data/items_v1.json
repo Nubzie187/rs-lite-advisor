@@ -1,0 +1,267 @@
+{
+  "items": [
+    {
+      "name": "Dragon Scimitar",
+      "category": "weapon",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Quest",
+          "name": "Monkey Madness I",
+          "description": "Complete Monkey Madness I quest to unlock Dragon Scimitar"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Abyssal Whip",
+      "category": "weapon",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Abyssal Demon",
+          "description": "Kill Abyssal Demons (85 Slayer required) - 1/512 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Tentacle Whip",
+      "category": "weapon",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Craft",
+          "skill": "Crafting",
+          "level": 35,
+          "description": "Combine Abyssal Whip with Kraken Tentacle (requires 35 Crafting)"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Dragon Platelegs",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Iron Dragon",
+          "description": "Kill Iron Dragons - 1/128 drop rate"
+        },
+        {
+          "type": "Drop",
+          "name": "Steel Dragon",
+          "description": "Kill Steel Dragons - 1/128 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Dragon Chainbody",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Kalphite Queen",
+          "description": "Kill Kalphite Queen - 1/128 drop rate"
+        },
+        {
+          "type": "Drop",
+          "name": "Dust Devil",
+          "description": "Kill Dust Devils (65 Slayer) - 1/32,768 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Torag's Platebody",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Torag the Corrupted",
+          "description": "Kill Torag the Corrupted in Barrows - 1/381 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Torag's Platelegs",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Torag the Corrupted",
+          "description": "Kill Torag the Corrupted in Barrows - 1/381 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Dharok's Platebody",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Dharok the Wretched",
+          "description": "Kill Dharok the Wretched in Barrows - 1/381 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Dharok's Platelegs",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Dharok the Wretched",
+          "description": "Kill Dharok the Wretched in Barrows - 1/381 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Verac's Platebody",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Verac the Defiled",
+          "description": "Kill Verac the Defiled in Barrows - 1/381 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Verac's Platelegs",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Drop",
+          "name": "Verac the Defiled",
+          "description": "Kill Verac the Defiled in Barrows - 1/381 drop rate"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Barrows Gloves",
+      "category": "armor",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Quest",
+          "name": "Recipe for Disaster",
+          "description": "Complete Recipe for Disaster quest, then purchase from Culinaromancer's Chest for 130K GP"
+        }
+      ]
+    },
+    {
+      "name": "Rune Scimitar",
+      "category": "weapon",
+      "p2p": false,
+      "sources": [
+        {
+          "type": "Shop",
+          "name": "Zeke's Scimitar Shop",
+          "location": "Al Kharid",
+          "description": "Buy from Zeke in Al Kharid for 15,360 GP"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Rune Platebody",
+      "category": "armor",
+      "p2p": false,
+      "sources": [
+        {
+          "type": "Quest",
+          "name": "Dragon Slayer",
+          "description": "Complete Dragon Slayer quest to unlock Rune Platebody"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    },
+    {
+      "name": "Dragon Dagger",
+      "category": "weapon",
+      "p2p": true,
+      "sources": [
+        {
+          "type": "Quest",
+          "name": "Lost City",
+          "description": "Complete Lost City quest to unlock Dragon Dagger"
+        },
+        {
+          "type": "GE",
+          "buyable": true,
+          "description": "Buy from Grand Exchange"
+        }
+      ]
+    }
+  ]
+}
+

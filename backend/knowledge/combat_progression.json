@@ -67,7 +67,8 @@
       "max_level": 85,
       "name": "High Level",
       "weapons": ["Dragon Scimitar", "Abyssal Whip (members)", "Tentacle Whip (members)"],
-      "armor": "Dragon Armor or Barrows Armor (members)",
+      "armor": "Dragon Armor (members)",
+      "armor_optional": "Barrows Armor (members, optional/high-cost)",
       "training_spots": [
         {
           "name": "Nightmare Zone",

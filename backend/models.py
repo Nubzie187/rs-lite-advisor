@@ -24,3 +24,9 @@ class AdviceItem(BaseModel):
 class AdviceResponse(BaseModel):
     items: List[AdviceItem]
 
+
+class DetailsResponse(BaseModel):
+    title: str
+    steps: List[str]
+    sources: List[str]
+

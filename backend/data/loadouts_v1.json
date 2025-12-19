@@ -1,0 +1,179 @@
+{
+  "loadouts": [
+    {
+      "context": "nmz_melee",
+      "tier": "budget",
+      "membership": "p2p",
+      "min_combat": 61,
+      "weapon": "Dragon Scimitar",
+      "offhand": "Dragon Defender",
+      "helm": "Dragon Med Helm",
+      "body": "Dragon Chainbody",
+      "legs": "Dragon Platelegs",
+      "gloves": "Combat Bracelet",
+      "boots": "Dragon Boots",
+      "cape": "Fire Cape",
+      "amulet": "Amulet of Glory",
+      "ring": "Berserker Ring",
+      "requirements": {
+        "weapon": "Monkey Madness I quest",
+        "offhand": "Warriors' Guild (130 Attack + Strength)",
+        "cape": "Fight Caves (requires high combat)",
+        "ring": "Dagannoth Rex (requires high combat)"
+      }
+    },
+    {
+      "context": "nmz_melee",
+      "tier": "mid",
+      "membership": "p2p",
+      "min_combat": 70,
+      "weapon": "Abyssal Whip",
+      "offhand": "Dragon Defender",
+      "helm": "Torag's Helm",
+      "body": "Torag's Platebody",
+      "legs": "Torag's Platelegs",
+      "gloves": "Barrows Gloves",
+      "boots": "Dragon Boots",
+      "cape": "Fire Cape",
+      "amulet": "Amulet of Fury",
+      "ring": "Berserker Ring (i)",
+      "requirements": {
+        "weapon": "85 Slayer (Abyssal Demons) or Grand Exchange",
+        "offhand": "Warriors' Guild (130 Attack + Strength)",
+        "gloves": "Recipe for Disaster quest",
+        "cape": "Fight Caves (requires high combat)",
+        "ring": "Dagannoth Rex (requires high combat)"
+      }
+    },
+    {
+      "context": "nmz_melee",
+      "tier": "best",
+      "membership": "p2p",
+      "min_combat": 70,
+      "weapon": "Dharok's Greataxe",
+      "offhand": "None (2H weapon)",
+      "helm": "Dharok's Helm",
+      "body": "Dharok's Platebody",
+      "legs": "Dharok's Platelegs",
+      "gloves": "Barrows Gloves",
+      "boots": "Dragon Boots",
+      "cape": "Fire Cape",
+      "amulet": "Amulet of Torture",
+      "ring": "Berserker Ring (i)",
+      "requirements": {
+        "weapon": "Barrows (Dharok the Wretched) or Grand Exchange",
+        "gloves": "Recipe for Disaster quest",
+        "cape": "Fight Caves (requires high combat)",
+        "ring": "Dagannoth Rex (requires high combat)"
+      }
+    },
+    {
+      "context": "general_melee",
+      "tier": "budget",
+      "membership": "p2p",
+      "min_combat": 50,
+      "weapon": "Dragon Scimitar",
+      "offhand": "Rune Defender",
+      "helm": "Dragon Med Helm",
+      "body": "Dragon Chainbody",
+      "legs": "Dragon Platelegs",
+      "gloves": "Combat Bracelet",
+      "boots": "Dragon Boots",
+      "cape": "Obsidian Cape",
+      "amulet": "Amulet of Glory",
+      "ring": "Warrior Ring",
+      "requirements": {
+        "weapon": "Monkey Madness I quest",
+        "offhand": "Warriors' Guild (130 Attack + Strength)",
+        "boots": "Dagannoth Kings (Rex) or Grand Exchange"
+      }
+    },
+    {
+      "context": "general_melee",
+      "tier": "mid",
+      "membership": "p2p",
+      "min_combat": 70,
+      "weapon": "Abyssal Whip",
+      "offhand": "Dragon Defender",
+      "helm": "Torag's Helm",
+      "body": "Torag's Platebody",
+      "legs": "Torag's Platelegs",
+      "gloves": "Barrows Gloves",
+      "boots": "Dragon Boots",
+      "cape": "Fire Cape",
+      "amulet": "Amulet of Fury",
+      "ring": "Berserker Ring",
+      "requirements": {
+        "weapon": "85 Slayer (Abyssal Demons) or Grand Exchange",
+        "offhand": "Warriors' Guild (130 Attack + Strength)",
+        "gloves": "Recipe for Disaster quest",
+        "cape": "Fight Caves (requires high combat)",
+        "ring": "Dagannoth Rex (requires high combat)"
+      }
+    },
+    {
+      "context": "general_melee",
+      "tier": "best",
+      "membership": "p2p",
+      "min_combat": 85,
+      "weapon": "Tentacle Whip",
+      "offhand": "Dragon Defender",
+      "helm": "Torag's Helm",
+      "body": "Torag's Platebody",
+      "legs": "Torag's Platelegs",
+      "gloves": "Barrows Gloves",
+      "boots": "Dragon Boots",
+      "cape": "Fire Cape",
+      "amulet": "Amulet of Torture",
+      "ring": "Berserker Ring (i)",
+      "requirements": {
+        "weapon": "Craft Abyssal Whip + Kraken Tentacle (35 Crafting) or Grand Exchange",
+        "offhand": "Warriors' Guild (130 Attack + Strength)",
+        "gloves": "Recipe for Disaster quest",
+        "cape": "Fight Caves (requires high combat)",
+        "ring": "Dagannoth Rex (requires high combat)"
+      }
+    },
+    {
+      "context": "general_melee",
+      "tier": "budget",
+      "membership": "f2p",
+      "min_combat": 40,
+      "weapon": "Rune Scimitar",
+      "offhand": "None",
+      "helm": "Rune Full Helm",
+      "body": "Rune Chainbody",
+      "legs": "Rune Platelegs",
+      "gloves": "Leather Gloves",
+      "boots": "Leather Boots",
+      "cape": "Team Cape",
+      "amulet": "Amulet of Strength",
+      "ring": "None",
+      "requirements": {
+        "weapon": "Zeke's Scimitar Shop (Al Kharid) or Grand Exchange",
+        "body": "Dragon Slayer quest (Rune Platebody unlock) or Grand Exchange"
+      }
+    },
+    {
+      "context": "general_melee",
+      "tier": "mid",
+      "membership": "f2p",
+      "min_combat": 40,
+      "weapon": "Rune Scimitar",
+      "offhand": "None",
+      "helm": "Rune Full Helm",
+      "body": "Rune Platebody",
+      "legs": "Rune Platelegs",
+      "gloves": "Leather Gloves",
+      "boots": "Leather Boots",
+      "cape": "Team Cape",
+      "amulet": "Amulet of Strength",
+      "ring": "None",
+      "requirements": {
+        "weapon": "Zeke's Scimitar Shop (Al Kharid) or Grand Exchange",
+        "body": "Dragon Slayer quest (Rune Platebody unlock) or Grand Exchange"
+      }
+    }
+  ]
+}
+

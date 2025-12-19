@@ -1,0 +1,71 @@
+{
+  "builds": [
+    {
+      "context": "nmz_melee",
+      "name": "Nightmare Zone Melee Setup",
+      "gear": [
+        "Dharok's Platebody",
+        "Dharok's Platelegs",
+        "Dharok's Helm",
+        "Dharok's Greataxe",
+        "Barrows Gloves",
+        "Dragon Boots",
+        "Amulet of Torture",
+        "Berserker Ring (i)"
+      ],
+      "inventory": [
+        "Absorption Potions (x20+)",
+        "Overload Potions (x5+)",
+        "Super Combat Potions (x5+)",
+        "Prayer Potions (x2)",
+        "Rock Cake (for 1 HP Dharok's method)"
+      ],
+      "prayers": [
+        "Piety (for maximum DPS)",
+        "Protect from Melee (if using absorption method)",
+        "Ultimate Strength + Incredible Reflexes (if not using Piety)"
+      ],
+      "notes": [
+        "Use Dharok's set with 1 HP for maximum XP/hour (use Rock Cake to lower HP)",
+        "Absorption method: Use absorption potions, no prayer needed",
+        "Prayer method: Use prayer potions with Piety for better XP but higher cost",
+        "Overload potions restore stats every 5 minutes",
+        "Best AFK training method for combat XP"
+      ]
+    },
+    {
+      "context": "general_melee",
+      "name": "General Melee Combat Setup",
+      "gear": [
+        "Abyssal Whip or Tentacle Whip",
+        "Dragon Defender",
+        "Torag's Platebody",
+        "Torag's Platelegs",
+        "Barrows Gloves",
+        "Dragon Boots",
+        "Amulet of Fury",
+        "Berserker Ring"
+      ],
+      "inventory": [
+        "Super Combat Potions (x4)",
+        "Sharks or Monkfish (x20+)",
+        "Teleport (House Tab or Ring of Dueling)",
+        "Prayer Potions (x2)",
+        "Antipoison (if needed)"
+      ],
+      "prayers": [
+        "Piety (for maximum DPS)",
+        "Protect from Melee (for dangerous areas)",
+        "Ultimate Strength + Incredible Reflexes (alternative to Piety)"
+      ],
+      "notes": [
+        "Versatile setup for Slayer tasks, bossing, and general PvM",
+        "Torag's armor provides good defence with low repair cost",
+        "Abyssal Whip is best-in-slot for most melee training",
+        "Tentacle Whip has higher DPS but degrades (use for bossing)",
+        "Dragon Defender is best-in-slot off-hand (from Warriors' Guild)"
+      ]
+    }
+  ]
+}
+

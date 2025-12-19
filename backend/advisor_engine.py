@@ -15,6 +15,106 @@ def load_combat_progression():
         return {"combat_brackets": []}
 
 
+def load_items_metadata():
+    """Load items acquisition metadata"""
+    items_path = os.path.join(os.path.dirname(__file__), "data", "items_v1.json")
+    try:
+        with open(items_path, 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"[ADVISOR WARNING] Failed to load items metadata: {e}")
+        return {"items": []}
+
+
+def load_loadouts():
+    """Load loadouts data"""
+    loadouts_path = os.path.join(os.path.dirname(__file__), "data", "loadouts_v1.json")
+    try:
+        with open(loadouts_path, 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"[ADVISOR WARNING] Failed to load loadouts: {e}")
+        return {"loadouts": []}
+
+
+def get_loadout_for_level(loadouts_data: dict, membership: str, combat_level: int, context: str = "general_melee", tier: str = "mid") -> dict:
+    """Get appropriate loadout based on combat level, membership, context, and tier"""
+    loadouts = loadouts_data.get("loadouts", [])
+    
+    # Filter by membership and context
+    matching = [l for l in loadouts if l.get("membership") == membership and l.get("context") == context]
+    
+    # Filter by combat level
+    matching = [l for l in matching if combat_level >= l.get("min_combat", 0)]
+    
+    if not matching:
+        return None
+    
+    # Prefer specified tier, fallback to closest
+    tier_loadout = next((l for l in matching if l.get("tier") == tier), None)
+    if tier_loadout:
+        return tier_loadout
+    
+    # Fallback: use highest tier available
+    tier_order = {"budget": 1, "mid": 2, "best": 3}
+    matching.sort(key=lambda x: tier_order.get(x.get("tier", "budget"), 1))
+    return matching[-1] if matching else None
+
+
+def get_item_acquisition(item_name: str, items_metadata: dict, membership: str, game_mode: str = "main") -> list:
+    """Get acquisition options for an item, mode-aware"""
+    items = items_metadata.get("items", [])
+    for item in items:
+        if item.get("name", "").lower() == item_name.lower():
+            # Filter by membership
+            if item.get("p2p", False) and membership == "f2p":
+                continue
+            
+            sources = item.get("sources", [])
+            
+            # Mode-aware filtering
+            if game_mode == "main":
+                # For main accounts: filter out low-probability drops as primary
+                # Keep quests, shops, craft, and common drops
+                # Low-probability drops (e.g., 1/32,768) should be marked as optional
+                filtered_sources = []
+                for source in sources:
+                    source_type = source.get("type")
+                    if source_type == "GE":
+                        filtered_sources.append(source)
+                    elif source_type == "Quest":
+                        filtered_sources.append(source)
+                    elif source_type == "Shop":
+                        filtered_sources.append(source)
+                    elif source_type == "Craft":
+                        filtered_sources.append(source)
+                    elif source_type == "Drop":
+                        # Check if it's a common drop (not extremely rare)
+                        desc = source.get("description", "").lower()
+                        if "1/512" in desc or "1/128" in desc or "1/381" in desc:
+                            # Common enough for main accounts
+                            filtered_sources.append(source)
+                        # Very rare drops (1/32k+) are excluded for main accounts
+                
+                # If no non-GE sources remain, use GE
+                if not any(s.get("type") != "GE" for s in filtered_sources):
+                    ge_sources = [s for s in sources if s.get("type") == "GE"]
+                    return ge_sources
+                
+                # Return non-GE first, then GE
+                non_ge = [s for s in filtered_sources if s.get("type") != "GE"]
+                ge = [s for s in filtered_sources if s.get("type") == "GE"]
+                return non_ge + ge
+            else:
+                # For iron accounts: prefer non-GE sources, avoid GE
+                non_ge_sources = [s for s in sources if s.get("type") != "GE"]
+                ge_sources = [s for s in sources if s.get("type") == "GE"]
+                # Return non-GE first, GE only as last resort
+                return non_ge_sources + ge_sources
+    
+    return []
+
+
 def get_combat_bracket(combat_level: int, progression_data: dict) -> dict:
     """Get the appropriate combat bracket for a given combat level"""
     brackets = progression_data.get("combat_brackets", [])
@@ -101,8 +201,7 @@ def get_recipe_for_disaster_advice(profile: Profile, combat_level: int, total_le
     steps = [
         "Complete all prerequisite quests (Cook's Assistant, Big Chompy Bird Hunting, etc.)",
         "Complete each Recipe for Disaster subquest one by one",
-        "Purchase Barrows Gloves from Culinaromancer's Chest for 130K GP",
-        "Equip Barrows Gloves for best-in-slot gloves (+12 Attack, Strength, Defence, Magic, Ranged)"
+        "Purchase Barrows Gloves from Culinaromancer's Chest for 130K GP"
     ]
     
     return AdviceItem(
@@ -116,39 +215,103 @@ def get_recipe_for_disaster_advice(profile: Profile, combat_level: int, total_le
     )
 
 
-def get_gear_recommendation(bracket: dict, membership: str, combat_level: int, attack: int, strength: int, defence: int) -> Optional[AdviceItem]:
-    """Generate gear/upgrade recommendation"""
+def get_gear_recommendation(bracket: dict, membership: str, combat_level: int, attack: int, strength: int, defence: int, game_mode: str = "main") -> Optional[AdviceItem]:
+    """Generate loadout-based gear recommendation with acquisition options"""
     if not bracket:
         return None
     
-    weapons = bracket.get("weapons", [])
-    armor = bracket.get("armor", "Appropriate armor")
-    weapons_text = " or ".join(weapons) if weapons else "Appropriate weapon"
+    # Load data
+    items_metadata = load_items_metadata()
+    loadouts_data = load_loadouts()
     
-    # Determine why this gear over alternatives
-    if combat_level < 50:
-        why_over = f"{weapons_text} and {armor} provide the best stats for your level. Upgrading from lower-tier gear significantly improves DPS and defence compared to staying with weaker equipment."
-    elif combat_level < 100:
-        why_over = f"{weapons_text} and {armor} are optimal for your combat level. Better than lower-tier gear for DPS, and more cost-effective than higher-tier gear you can't use yet."
+    # Determine context based on combat level
+    if combat_level >= 70:
+        context = "nmz_melee" if membership == "p2p" else "general_melee"
     else:
-        why_over = f"{weapons_text} and {armor} are best-in-slot or near best-in-slot for your level. Essential for high-level content and better than any lower-tier alternatives."
+        context = "general_melee"
     
-    steps = [
-        f"Purchase {weapons_text} from Grand Exchange",
-        f"Buy {armor} from Grand Exchange or shops",
-        f"Equip {weapons_text} for optimal DPS",
-        f"Equip {armor} for optimal defence stats"
-    ]
+    # Get appropriate loadout
+    loadout = get_loadout_for_level(loadouts_data, membership, combat_level, context, tier="mid")
+    if not loadout:
+        return None
     
-    # Add quest unlock if applicable
-    if combat_level < 50 and membership == "f2p":
-        steps.append("Complete Dragon Slayer quest to unlock Rune Platebody")
-    elif combat_level < 50 and membership == "p2p":
-        steps.append("Complete Lost City quest to unlock Dragon Dagger")
+    tier = loadout.get("tier", "mid")
+    context_name = loadout.get("context", "general_melee")
+    
+    # Build full gear list
+    gear_list = []
+    key_items = ["weapon", "offhand", "gloves", "cape", "ring"]  # Items that typically need acquisition
+    
+    for slot in ["weapon", "offhand", "helm", "body", "legs", "gloves", "boots", "cape", "amulet", "ring"]:
+        item = loadout.get(slot, "None")
+        if item and item != "None":
+            gear_list.append(f"{slot.capitalize()}: {item}")
+    
+    # Build steps: start with full gear list
+    steps = []
+    if gear_list:
+        steps.append("Loadout: " + ", ".join(gear_list))
+    
+    for slot in key_items:
+        item = loadout.get(slot, "None")
+        if not item or item == "None":
+            continue
+        
+        req = loadout.get("requirements", {}).get(slot)
+        
+        # Get acquisition options
+        item_sources = get_item_acquisition(item, items_metadata, membership, game_mode)
+        
+        if item_sources:
+            # Get 2 options (prefer non-GE, then GE)
+            non_ge = [s for s in item_sources if s.get("type") != "GE"][:2]
+            ge_source = next((s for s in item_sources if s.get("type") == "GE"), None)
+            
+            options = []
+            
+            # Option 1: Non-GE if available
+            if non_ge:
+                source = non_ge[0]
+                if source.get("type") == "Quest":
+                    options.append(f"Complete {source.get('name')} quest")
+                elif source.get("type") == "Drop":
+                    options.append(f"Kill {source.get('name')} ({source.get('description', '')})")
+                elif source.get("type") == "Shop":
+                    options.append(f"Buy from {source.get('name')} in {source.get('location', '')}")
+                elif source.get("type") == "Craft":
+                    options.append(f"Craft (requires {source.get('level', '')} {source.get('skill', '')})")
+            
+            # Option 2: GE or second non-GE
+            if ge_source and game_mode == "main":
+                options.append("Buy from Grand Exchange")
+            elif len(non_ge) > 1:
+                source = non_ge[1]
+                if source.get("type") == "Quest":
+                    options.append(f"Complete {source.get('name')} quest")
+                elif source.get("type") == "Drop":
+                    options.append(f"Kill {source.get('name')} ({source.get('description', '')})")
+                elif source.get("type") == "Shop":
+                    options.append(f"Buy from {source.get('name')} in {source.get('location', '')}")
+            elif ge_source and game_mode == "iron":
+                options.append("Buy from Grand Exchange (last resort)")
+            
+            if options:
+                step_text = f"{item}: {options[0]}" + (f" or {options[1]}" if len(options) > 1 else "")
+                if req:
+                    step_text += f" (requires: {req})"
+                steps.append(step_text)
+    
+    # Build why_over_alternatives
+    if tier == "budget":
+        why_over = f"Budget {context_name} loadout provides good stats for cost. Better than lower-tier gear, more affordable than mid tier."
+    elif tier == "mid":
+        why_over = f"Mid-tier {context_name} loadout balances cost and effectiveness. Better than budget tier for DPS, more cost-effective than best tier."
+    else:
+        why_over = f"Best {context_name} loadout provides maximum stats. Better than mid-tier for DPS and defence, essential for high-level content."
     
     return AdviceItem(
-        title=f"Upgrade to {weapons_text} and {armor}",
-        why_now=f"At {combat_level} combat, upgrade to {weapons_text} and {armor} for better combat effectiveness.",
+        title=f"Recommended loadout: {tier} {context_name}",
+        why_now=f"At {combat_level} combat, use {tier} {context_name} loadout for optimal combat effectiveness.",
         steps=steps,
         why_over_alternatives=why_over
     )
@@ -213,16 +376,61 @@ def get_training_recommendation(bracket: dict, membership: str, combat_level: in
         else:
             why_over = f"{spot_name} is optimal for your combat level. Better than {', '.join(alternatives[:2]) if alternatives else 'lower-level methods'}."
     
-    steps = [
-        f"Travel to {location}",
-        f"Equip best available combat gear",
-        f"Train at {spot_name} to gain combat XP",
-        f"Level up Attack ({attack}), Strength ({strength}), and Defence ({defence})"
-    ]
+    # Determine target stats based on current levels and combat level
+    current_attack = attack
+    current_strength = strength
+    current_defence = defence
+    
+    # Calculate target stats (next milestone)
+    if combat_level < 50:
+        target_attack = max(50, current_attack + 10)
+        target_strength = max(50, current_strength + 10)
+        target_defence = max(50, current_defence + 10)
+        target = "Reach 50 combat level (unlocks better training spots and gear)"
+    elif combat_level < 70:
+        target_attack = max(70, current_attack + 10)
+        target_strength = max(70, current_strength + 10)
+        target_defence = max(70, current_defence + 10)
+        target = "Reach 70 in all combat stats (unlocks Barrows equipment and better training)"
+    elif combat_level < 100:
+        target_attack = max(85, current_attack + 10)
+        target_strength = max(85, current_strength + 10)
+        target_defence = max(85, current_defence + 10)
+        target = "Reach 85+ combat stats (unlocks high-level Slayer tasks and bossing)"
+    else:
+        target_attack = max(99, current_attack + 5)
+        target_strength = max(99, current_strength + 5)
+        target_defence = max(99, current_defence + 5)
+        target = "Reach 99 in combat stats (max combat level)"
+    
+    target_stats = f"{target_attack}/{target_strength}/{target_defence}"
+    
+    # Determine recommended food based on combat level
+    if combat_level < 50:
+        recommended_food = "Lobsters"
+    elif combat_level < 70:
+        recommended_food = "Swordfish"
+    else:
+        recommended_food = "Sharks"
+    
+    # Build steps (no filler, actionable only)
+    steps = []
+    
+    # Check if access is needed
+    if "Nightmare Zone" in spot_name:
+        steps.append("Complete Dream Mentor quest (required for Nightmare Zone)")
+        steps.append("Unlock Nightmare Zone by talking to Dominic Onion in Yanille")
+    elif "Slayer" in spot_name:
+        steps.append(f"Get Slayer task from Slayer Master (requires appropriate Slayer level)")
+    
+    steps.append(f"Travel to {location}")
+    steps.append(f"Train at {spot_name} until reaching {target_stats} (Attack/Strength/Defence)")
+    steps.append(f"Target: {target}")
+    steps.append(f"Bring food: {recommended_food} (click for details on how to obtain)")
     
     return AdviceItem(
-        title=f"Train at {spot_name}",
-        why_now=f"At {combat_level} combat, train at {spot_name} ({location}) for efficient combat XP.",
+        title=f"Train at {spot_name} until {target_stats}",
+        why_now=f"At {combat_level} combat with {current_attack}/{current_strength}/{current_defence}, train at {spot_name} ({location}) to reach {target_stats} for {target}.",
         steps=steps,
         why_over_alternatives=why_over
     )
@@ -248,16 +456,16 @@ def get_quest_recommendation(profile: Profile, combat_level: int, total_level: i
         next_actions = [
             "Complete Lost City quest" if profile.skills.get("crafting", 1) < 31 else "Complete Merlin's Crystal quest",
             "Train Magic to 33+" if profile.skills.get("magic", 1) < 33 else "Start Dragon Slayer quest",
-            "Prepare combat gear and food for Elvarg"
+            "Travel to Karamja volcano to fight Elvarg"
         ][:3]
     else:
         quest = "Waterfall Quest"
         why_over = "Waterfall Quest provides 13,750 Attack and Strength XP with minimal requirements. Better than training manually for early combat levels."
         steps = [
-            "Meet requirements: 30+ Attack and Strength recommended",
+            "Train Attack to 30+ (if not already)",
+            "Train Strength to 30+ (if not already)",
             "Start quest by talking to Almera in Baxtorian Falls",
-            "Navigate through the waterfall dungeon",
-            "Defeat Fire Giants and Moss Giants",
+            "Navigate through the waterfall dungeon and defeat Fire Giants and Moss Giants",
             "Claim 13,750 XP in Attack and Strength"
         ]
         requirements = ["30+ Attack recommended", "30+ Strength recommended"]
@@ -265,7 +473,7 @@ def get_quest_recommendation(profile: Profile, combat_level: int, total_level: i
         next_actions = [
             "Train Attack to 30+" if profile.skills.get("attack", 1) < 30 else "Train Strength to 30+" if profile.skills.get("strength", 1) < 30 else "Start Waterfall Quest",
             "Travel to Baxtorian Falls (north of Seers' Village)",
-            "Prepare combat gear"
+            "Complete Waterfall Quest objectives"
         ][:3]
     
     return AdviceItem(
@@ -338,7 +546,7 @@ def get_advice(profile: Profile) -> list[AdviceItem]:
     primary_actions = set()
     
     # Slot 1: Gear/Upgrade (always include)
-    gear_item = get_gear_recommendation(bracket, profile.membership, combat_level, attack, strength, defence)
+    gear_item = get_gear_recommendation(bracket, profile.membership, combat_level, attack, strength, defence, profile.game_mode)
     if gear_item:
         primary_action = get_primary_action(gear_item)
         items.append(gear_item)
@@ -359,14 +567,25 @@ def get_advice(profile: Profile) -> list[AdviceItem]:
                 spot_name = spot.get("name", "Training spot")
                 location = spot.get("location", "")
                 if spot_name and location:
+                    # Determine target for alternative spot
+                    if combat_level < 50:
+                        target_stats = "50 Attack, 50 Strength, 50 Defence"
+                        target = "Reach 50 combat level"
+                    elif combat_level < 70:
+                        target_stats = "70 Attack, 70 Strength, 70 Defence"
+                        target = "Reach 70 in all combat stats"
+                    else:
+                        target_stats = "85 Attack, 85 Strength, 85 Defence"
+                        target = "Reach 85+ combat stats"
+                    
                     alt_training = AdviceItem(
-                        title=f"Train at {spot_name}",
-                        why_now=f"At {combat_level} combat, train at {spot_name} ({location}) for combat XP.",
+                        title=f"Train at {spot_name} until {target_stats}",
+                        why_now=f"At {combat_level} combat, train at {spot_name} ({location}) to reach {target_stats} for {target}.",
                         steps=[
                             f"Travel to {location}",
-                            f"Equip best available combat gear",
-                            f"Train at {spot_name} to gain combat XP",
-                            f"Level up Attack ({attack}), Strength ({strength}), and Defence ({defence})"
+                            f"Unlock access to {spot_name} (complete required quests if needed)",
+                            f"Kill monsters at {spot_name} to gain combat XP until reaching {target_stats}",
+                            f"Achieve target: {target}"
                         ],
                         why_over_alternatives=f"{spot_name} is an alternative training spot. Better than lower-level spots and provides good XP rates."
                     )
@@ -388,7 +607,7 @@ def get_advice(profile: Profile) -> list[AdviceItem]:
             if profile.membership == "f2p":
                 alt_quest = AdviceItem(
                     title="Complete Lost City Quest",
-                    why_now=f"Complete Lost City quest to unlock Dragon weapons and prepare for Dragon Slayer.",
+                    why_now=f"Complete Lost City quest to unlock Dragon weapons and unlock prerequisite for Dragon Slayer.",
                     steps=[
                         "Train Crafting to 31+",
                         "Start quest by talking to the Shanty Pass guard",

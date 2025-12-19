@@ -223,6 +223,149 @@
             color: #667eea;
             padding: 20px;
         }
+
+        .build-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .build-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .build-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .build-section {
+            margin-bottom: 15px;
+        }
+
+        .build-section strong {
+            display: block;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .build-section ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+
+        .build-section li {
+            margin-bottom: 5px;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .details-link {
+            color: #667eea;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 8px;
+        }
+
+        .details-link:hover {
+            color: #764ba2;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+            margin: 0;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .modal-steps {
+            margin-bottom: 20px;
+        }
+
+        .modal-steps h3 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .modal-steps ol {
+            margin-left: 20px;
+        }
+
+        .modal-steps li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .modal-sources {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .modal-sources h3 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .modal-sources ul {
+            margin-left: 20px;
+        }
+
+        .modal-sources li {
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -280,6 +423,7 @@
         <section class="profile-section">
             <div class="button-group">
                 <button id="get-advice-btn" onclick="getAdvice()">Get Advice</button>
+                <button id="view-builds-btn" onclick="viewBuilds()">View Builds</button>
             </div>
             <div id="message" class="message"></div>
         </section>
@@ -290,6 +434,37 @@
                 <p class="placeholder">Click "Get Advice" to see recommendations</p>
             </div>
         </section>
+
+        <section id="builds-section" class="profile-section" style="display: none;">
+            <h2>Build Cards</h2>
+            <div style="margin-bottom: 15px;">
+                <label for="build-context" style="display: block; font-weight: 600; color: #555; margin-bottom: 8px;">Context</label>
+                <select 
+                    id="build-context"
+                    style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem;"
+                    onchange="viewBuilds()"
+                >
+                    <option value="">All Builds</option>
+                    <option value="nmz_melee">Nightmare Zone Melee</option>
+                    <option value="general_melee">General Melee</option>
+                </select>
+            </div>
+            <div id="builds-content">
+                <p class="placeholder">Select a context and click "View Builds"</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Details</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modal-steps" class="modal-steps"></div>
+            <div id="modal-sources" class="modal-sources"></div>
+        </div>
     </div>
 
     <script>
@@ -514,24 +689,214 @@
                 return;
             }
 
-            const cards = items.map(item => `
-                <div class="advice-card">
-                    <h3>${item.title}</h3>
-                    <p class="why-now">
-                        <strong>Why now:</strong> ${item.why_now}
-                    </p>
-                    <div class="steps">
-                        <strong>Steps:</strong>
+            const cards = items.map(item => {
+                // Check if this is a loadout recommendation
+                const isLoadout = item.title && item.title.toLowerCase().includes('loadout');
+                
+                // Process steps to add Details links for key items and food
+                const processedSteps = item.steps.map(step => {
+                    let processedStep = step;
+                    
+                    // Add Details link for food mentions
+                    const foodMatch = step.match(/Bring food: (Lobsters|Swordfish|Sharks)/i);
+                    if (foodMatch) {
+                        const foodName = foodMatch[1];
+                        // Replace the food name and any trailing text with a clickable link
+                        processedStep = step.replace(
+                            /Bring food: (Lobsters|Swordfish|Sharks)(.*?)/i,
+                            (match, food, rest) => {
+                                return `Bring food: <span class="details-link" onclick="showDetails('food', '${food}')">${food} (Details)</span>`;
+                            }
+                        );
+                    }
+                    
+                    // For loadout recommendations, add Details links for key items
+                    if (isLoadout) {
+                        // Extract item names from steps (format: "Item Name: acquisition method")
+                        const itemMatch = step.match(/^([^:]+):/);
+                        if (itemMatch) {
+                            const itemName = itemMatch[1].trim();
+                            // Only add for key items (weapon, gloves, cape, ring, offhand)
+                            const keyItems = ['Dragon Scimitar', 'Abyssal Whip', 'Tentacle Whip', 'Dharok\'s Greataxe', 
+                                             'Dragon Defender', 'Barrows Gloves', 'Fire Cape', 'Berserker Ring', 
+                                             'Combat Bracelet', 'Amulet of Fury', 'Amulet of Torture'];
+                            if (keyItems.some(key => itemName.includes(key))) {
+                                processedStep = step.replace(
+                                    /^([^:]+):/,
+                                    `$1 <span class="details-link" onclick="showDetails('item', '${itemName}')">(Details)</span>:`
+                                );
+                            }
+                        }
+                    }
+                    
+                    return processedStep;
+                });
+                
+                return `
+                    <div class="advice-card">
+                        <h3>${item.title}</h3>
+                        <p class="why-now">
+                            <strong>Why now:</strong> ${item.why_now}
+                        </p>
+                        <div class="steps">
+                            <strong>Steps:</strong>
+                            <ol>
+                                ${processedSteps.map(step => `<li>${step}</li>`).join('')}
+                            </ol>
+                        </div>
+                        ${item.why_over_alternatives ? `
+                            <p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; color: #666; font-size: 0.9rem;">
+                                <strong>Why this over alternatives:</strong> ${item.why_over_alternatives}
+                            </p>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            content.innerHTML = `<div class="advice-cards">${cards}</div>`;
+        }
+
+        async function showDetails(type, name) {
+            const modal = document.getElementById('details-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalSteps = document.getElementById('modal-steps');
+            const modalSources = document.getElementById('modal-sources');
+            
+            // Show modal
+            modal.style.display = 'block';
+            modalTitle.textContent = `Loading...`;
+            modalSteps.innerHTML = '';
+            modalSources.innerHTML = '';
+            
+            try {
+                const response = await fetch(`${API_URL}/details?type=${encodeURIComponent(type)}&name=${encodeURIComponent(name)}`);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Failed to load details');
+                }
+                
+                const data = await response.json();
+                
+                modalTitle.textContent = data.title;
+                
+                // Display steps
+                if (data.steps && data.steps.length > 0) {
+                    modalSteps.innerHTML = `
+                        <h3>Steps</h3>
                         <ol>
-                            ${item.steps.map(step => `<li>${step}</li>`).join('')}
+                            ${data.steps.map(step => `<li>${step}</li>`).join('')}
                         </ol>
+                    `;
+                }
+                
+                // Display sources
+                if (data.sources && data.sources.length > 0) {
+                    modalSources.innerHTML = `
+                        <h3>Sources</h3>
+                        <ul>
+                            ${data.sources.map(source => `<li>${source}</li>`).join('')}
+                        </ul>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to load details:', error);
+                modalTitle.textContent = 'Error';
+                modalSteps.innerHTML = `<p style="color: #e74c3c;">Failed to load details: ${error.message}</p>`;
+            }
+        }
+
+        // Close modal when clicking outside or on close button
+        window.onclick = function(event) {
+            const modal = document.getElementById('details-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('details-modal').style.display = 'none';
+        }
+
+        async function viewBuilds() {
+            const buildsSection = document.getElementById('builds-section');
+            const buildsContent = document.getElementById('builds-content');
+            const contextSelect = document.getElementById('build-context');
+            const context = contextSelect.value;
+
+            buildsSection.style.display = 'block';
+            buildsContent.innerHTML = '<div class="loading">Loading builds...</div>';
+
+            try {
+                const url = context ? `${API_URL}/builds?context=${encodeURIComponent(context)}` : `${API_URL}/builds`;
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Failed to load builds');
+                }
+
+                const data = await response.json();
+                displayBuilds(data.builds);
+            } catch (error) {
+                console.error('Failed to load builds:', error);
+                buildsContent.innerHTML = '<p class="placeholder">Failed to load builds. Please try again.</p>';
+            }
+        }
+
+        function displayBuilds(builds) {
+            const content = document.getElementById('builds-content');
+
+            if (!builds || builds.length === 0) {
+                content.innerHTML = '<p class="placeholder">No builds found for selected context</p>';
+                return;
+            }
+
+            const cards = builds.map(build => `
+                <div class="build-card">
+                    <h3>${build.name}</h3>
+                    <div class="build-section">
+                        <strong>Gear:</strong>
+                        <ul>
+                            ${build.gear.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="build-section">
+                        <strong>Inventory:</strong>
+                        <ul>
+                            ${build.inventory.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="build-section">
+                        <strong>Prayers:</strong>
+                        <ul>
+                            ${build.prayers.map(prayer => `<li>${prayer}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="build-section">
+                        <strong>Notes:</strong>
+                        <ul>
+                            ${build.notes.map(note => `<li>${note}</li>`).join('')}
+                        </ul>
                     </div>
                 </div>
             `).join('');
 
-            content.innerHTML = `<div class="advice-cards">${cards}</div>`;
+            content.innerHTML = cards;
         }
     </script>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Details</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modal-steps" class="modal-steps"></div>
+            <div id="modal-sources" class="modal-sources"></div>
+        </div>
+    </div>
 </body>
 </html>
 

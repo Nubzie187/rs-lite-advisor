@@ -1,0 +1,101 @@
+{
+  "recipes": [
+    {
+      "name": "Lobsters",
+      "type": "food",
+      "healing": 12,
+      "cooking_level": 40,
+      "ingredients": [
+        {
+          "name": "Raw Lobster",
+          "sources": [
+            {
+              "type": "Fish",
+              "location": "Catherby",
+              "method": "Fish Lobsters at Catherby (Fishing level 40)",
+              "notes": "Best F2P fishing spot. Use Fishing rod and Bait."
+            },
+            {
+              "type": "Buy",
+              "location": "Grand Exchange",
+              "method": "Buy Raw Lobsters from Grand Exchange",
+              "notes": "Fastest method for main accounts"
+            }
+          ]
+        }
+      ],
+      "cooking_location": "Cooking Guild",
+      "cooking_method": "Use range in Cooking Guild (requires Cooking level 32 to enter)",
+      "burn_chance": "Low at level 40+",
+      "nmz_quantity": "20-30 per hour (depends on combat setup)",
+      "notes": "Good mid-level food. Heals 12 HP. Easy to obtain and cook."
+    },
+    {
+      "name": "Swordfish",
+      "type": "food",
+      "healing": 14,
+      "cooking_level": 45,
+      "ingredients": [
+        {
+          "name": "Raw Swordfish",
+          "sources": [
+            {
+              "type": "Fish",
+              "location": "Catherby",
+              "method": "Fish Swordfish at Catherby (Fishing level 50)",
+              "notes": "Best F2P fishing spot. Use Harpoon."
+            },
+            {
+              "type": "Buy",
+              "location": "Grand Exchange",
+              "method": "Buy Raw Swordfish from Grand Exchange",
+              "notes": "Fastest method for main accounts"
+            }
+          ]
+        }
+      ],
+      "cooking_location": "Cooking Guild",
+      "cooking_method": "Use range in Cooking Guild (requires Cooking level 32 to enter)",
+      "burn_chance": "Low at level 45+",
+      "nmz_quantity": "15-25 per hour (depends on combat setup)",
+      "notes": "Better healing than Lobsters. Heals 14 HP. Requires Fishing level 50."
+    },
+    {
+      "name": "Sharks",
+      "type": "food",
+      "healing": 20,
+      "cooking_level": 80,
+      "ingredients": [
+        {
+          "name": "Raw Shark",
+          "sources": [
+            {
+              "type": "Fish",
+              "location": "Fishing Guild",
+              "method": "Fish Sharks at Fishing Guild (Fishing level 76)",
+              "notes": "Best P2P fishing spot. Requires Fishing Guild access (Fishing level 68). Use Harpoon."
+            },
+            {
+              "type": "Fish",
+              "location": "Catherby",
+              "method": "Fish Sharks at Catherby (Fishing level 76)",
+              "notes": "Alternative location if you don't have Fishing Guild access. Use Harpoon."
+            },
+            {
+              "type": "Buy",
+              "location": "Grand Exchange",
+              "method": "Buy Raw Sharks from Grand Exchange",
+              "notes": "Fastest method for main accounts"
+            }
+          ]
+        }
+      ],
+      "cooking_location": "Cooking Guild",
+      "cooking_method": "Use range in Cooking Guild (requires Cooking level 32 to enter)",
+      "burn_chance": "Low at level 80+, medium at 80-90",
+      "nmz_quantity": "10-20 per hour (depends on combat setup)",
+      "notes": "Best high-level food. Heals 20 HP. Requires Fishing level 76 and Cooking level 80. Expensive but very effective."
+    }
+  ]
+}
+
