@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuneScape Lite Advisor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-section h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .profile-item {
+            padding: 10px;
+            background: #f7fafc;
+            border-radius: 6px;
+        }
+
+        .profile-item label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .profile-item .value {
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .skill-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        button:hover:not(:disabled) {
+            background: #5568d3;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .advice-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .advice-section h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .advice-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .advice-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .advice-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .advice-card h3 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        .why-now {
+            margin-bottom: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .why-now strong {
+            color: #333;
+        }
+
+        .steps {
+            margin-top: 15px;
+        }
+
+        .steps strong {
+            color: #333;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .steps ol {
+            margin-left: 20px;
+        }
+
+        .steps li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        .placeholder {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-style: italic;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            background: #c6f6d5;
+            border-radius: 6px;
+            color: #22543d;
+            text-align: center;
+            display: none;
+        }
+
+        .message.error {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RuneScape Lite Advisor</h1>
+            <p>Get personalized advice for your RuneScape journey</p>
+        </header>
+
+        <section class="profile-section">
+            <h2>Your Profile</h2>
+            <div id="profile-content">
+                <div class="loading">Loading profile...</div>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <div class="button-group">
+                <button id="get-advice-btn" onclick="getAdvice()">Get Advice</button>
+            </div>
+            <div id="message" class="message"></div>
+        </section>
+
+        <section class="advice-section">
+            <h2>Recommendations</h2>
+            <div id="advice-content">
+                <p class="placeholder">Click "Get Advice" to see recommendations</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin;
+
+        // Load profile on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProfile();
+        });
+
+        async function loadProfile() {
+            try {
+                const response = await fetch(`${API_URL}/profile`);
+                const profile = await response.json();
+                displayProfile(profile);
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+                document.getElementById('profile-content').innerHTML = 
+                    '<div class="message error show">Failed to load profile</div>';
+            }
+        }
+
+        function displayProfile(profile) {
+            const content = document.getElementById('profile-content');
+            
+            const skillsList = Object.entries(profile.skills || {})
+                .map(([skill, level]) => `<span class="skill-badge">${skill}: ${level}</span>`)
+                .join('');
+
+            content.innerHTML = `
+                <div class="profile-info">
+                    <div class="profile-item">
+                        <label>Game Mode</label>
+                        <div class="value">${profile.game_mode || 'main'}</div>
+                    </div>
+                    <div class="profile-item">
+                        <label>Membership</label>
+                        <div class="value">${profile.membership === 'p2p' ? 'Members' : 'Free-to-Play'}</div>
+                    </div>
+                    <div class="profile-item">
+                        <label>Playtime</label>
+                        <div class="value">${profile.playtime_minutes || 0} minutes</div>
+                    </div>
+                    <div class="profile-item">
+                        <label>Goals</label>
+                        <div class="value">${profile.goals && profile.goals.length > 0 ? profile.goals.join(', ') : 'None'}</div>
+                    </div>
+                </div>
+                <div>
+                    <label style="display: block; font-weight: 600; color: #555; margin-bottom: 10px;">Skills</label>
+                    <div class="skills-list">${skillsList || 'No skills set'}</div>
+                </div>
+            `;
+        }
+
+        async function getAdvice() {
+            const btn = document.getElementById('get-advice-btn');
+            const message = document.getElementById('message');
+            const adviceContent = document.getElementById('advice-content');
+
+            btn.disabled = true;
+            message.className = 'message';
+            adviceContent.innerHTML = '<div class="loading">Getting advice...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/advice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to get advice');
+                }
+
+                const data = await response.json();
+                displayAdvice(data.items);
+                message.className = 'message show';
+                message.textContent = 'Advice loaded successfully!';
+            } catch (error) {
+                console.error('Failed to get advice:', error);
+                adviceContent.innerHTML = '<p class="placeholder">Failed to load advice. Please try again.</p>';
+                message.className = 'message error show';
+                message.textContent = 'Error loading advice';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function displayAdvice(items) {
+            const content = document.getElementById('advice-content');
+
+            if (!items || items.length === 0) {
+                content.innerHTML = '<p class="placeholder">No advice available</p>';
+                return;
+            }
+
+            const cards = items.map(item => `
+                <div class="advice-card">
+                    <h3>${item.title}</h3>
+                    <p class="why-now">
+                        <strong>Why now:</strong> ${item.why_now}
+                    </p>
+                    <div class="steps">
+                        <strong>Steps:</strong>
+                        <ol>
+                            ${item.steps.map(step => `<li>${step}</li>`).join('')}
+                        </ol>
+                    </div>
+                </div>
+            `).join('');
+
+            content.innerHTML = `<div class="advice-cards">${cards}</div>`;
+        }
+    </script>
+</body>
+</html>
+
