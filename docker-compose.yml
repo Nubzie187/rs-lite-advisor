@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - db_data:/data
+    environment:
+      - DATABASE_PATH=/data/app.db
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - db_init
+
+  db_init:
+    image: alpine:latest
+    volumes:
+      - db_data:/data
+    command: sh -c "mkdir -p /data && touch /data/.init"
+
+volumes:
+  db_data:
+
