@@ -1,7 +1,7 @@
 import json
 import os
-from models import Profile, AdviceItem
-from typing import Optional, Tuple
+from models import Profile, AdviceItem, StrategyCard, BeginnerCard
+from typing import Optional, Tuple, List
 
 
 def load_combat_progression():
@@ -520,123 +520,289 @@ def get_primary_action(item: AdviceItem) -> str:
     return "unknown"
 
 
-def get_advice(profile: Profile) -> list[AdviceItem]:
-    """
-    Advisor engine with quality enforcement:
-    - Exactly 3 items: 1 Gear/Upgrade, 1 Training Method, 1 Quest/Unlock
-    - No duplicate primary actions
-    - No filler steps (all steps change account state)
-    - Comparative reasoning for each recommendation
-    """
-    # Load combat progression data
-    progression_data = load_combat_progression()
+def is_beginner_player(combat_level: int, total_level: int) -> bool:
+    """Detect if player is a beginner (combat <= 10 OR total level <= 100)"""
+    return combat_level <= 10 or total_level <= 100
+
+
+def get_barrows_gloves_strategy(profile: Profile, combat_level: int) -> StrategyCard:
+    """Generate strategy card for preparing for Barrows Gloves"""
+    cooking = profile.skills.get("cooking", 1)
+    fishing = profile.skills.get("fishing", 1)
+    thieving = profile.skills.get("thieving", 1)
+    firemaking = profile.skills.get("firemaking", 1)
+    magic = profile.skills.get("magic", 1)
     
-    # Calculate metrics
-    combat_level = calculate_combat_level(profile.skills)
-    total_level = sum(profile.skills.values())
+    why = "Barrows Gloves are best-in-slot gloves for most combat builds. They provide +12 to all combat stats (Attack, Strength, Defence, Ranged, Magic) and are required for optimal DPS in PvM, PvP, and bossing. Unlocking them early sets up your account for efficient progression."
+    
+    unlocks = [
+        "Barrows Gloves (+12 all combat stats)",
+        "Access to Culinaromancer's Chest (130K GP to purchase gloves)",
+        "Best-in-slot gloves for melee, magic, and ranged builds",
+        "Required for optimal DPS in all combat scenarios",
+        "Combat XP rewards from each Recipe for Disaster subquest"
+    ]
+    
+    next_actions = []
+    if cooking < 40:
+        next_actions.append(f"Train Cooking to 40 (currently {cooking})")
+    if fishing < 53:
+        next_actions.append(f"Train Fishing to 53 (currently {fishing})")
+    if thieving < 53:
+        next_actions.append(f"Train Thieving to 53 (currently {thieving})")
+    if firemaking < 50:
+        next_actions.append(f"Train Firemaking to 50 (currently {firemaking})")
+    if magic < 59:
+        next_actions.append(f"Train Magic to 59 (currently {magic})")
+    if len(next_actions) == 0:
+        next_actions.append("Complete prerequisite quests (Cook's Assistant, Big Chompy Bird Hunting, Fishing Contest)")
+        next_actions.append("Start Recipe for Disaster quest line")
+    
+    return StrategyCard(
+        title="Prepare for Barrows Gloves",
+        why=why,
+        unlocks=unlocks,
+        next_actions=next_actions[:3],
+        unlock_path_context="barrows_gloves",
+        build_context="general_melee"
+    )
+
+
+def get_mid_game_combat_training_strategy(profile: Profile, combat_level: int) -> StrategyCard:
+    """Generate strategy card for efficient mid-game combat training"""
     attack = profile.skills.get("attack", 1)
     strength = profile.skills.get("strength", 1)
     defence = profile.skills.get("defence", 1)
     
-    # Get combat bracket
-    bracket = get_combat_bracket(combat_level, progression_data)
+    why = "Mid-game combat training (70-85 stats) unlocks access to Barrows equipment, high-level Slayer tasks, and efficient bossing. Reaching 70+ in all combat stats opens up significantly better training methods and gear options, making future progression much faster."
     
-    # Enforce 3 slots: Gear, Training, Quest
-    items = []
-    primary_actions = set()
+    unlocks = [
+        "Access to Barrows equipment (best mid-game armor)",
+        "Unlock high-level Slayer tasks (profitable and efficient)",
+        "Access to better training spots (NMZ, Slayer, bossing)",
+        "Ability to use Abyssal Whip and Dragon equipment",
+        "Foundation for reaching 85+ stats (high-level content)"
+    ]
     
-    # Slot 1: Gear/Upgrade (always include)
-    gear_item = get_gear_recommendation(bracket, profile.membership, combat_level, attack, strength, defence, profile.game_mode)
-    if gear_item:
-        primary_action = get_primary_action(gear_item)
-        items.append(gear_item)
-        primary_actions.add(primary_action)
+    next_actions = []
+    if attack < 70:
+        next_actions.append(f"Reach 70 Attack (currently {attack})")
+    if strength < 70:
+        next_actions.append(f"Reach 70 Strength (currently {strength})")
+    if defence < 70:
+        next_actions.append(f"Reach 70 Defence (currently {defence})")
+    if len(next_actions) == 0:
+        next_actions.append("Aim for 85+ in all combat stats")
+        next_actions.append("Unlock Barrows equipment")
     
-    # Slot 2: Training Method (always include)
-    training_item = get_training_recommendation(bracket, profile.membership, combat_level, attack, strength, defence)
-    if training_item:
-        primary_action = get_primary_action(training_item)
-        # Check for duplicate with gear
-        if primary_action not in primary_actions:
-            items.append(training_item)
-            primary_actions.add(primary_action)
-        else:
-            # Use alternative training spot
-            if bracket and bracket.get("training_spots") and len(bracket["training_spots"]) > 1:
-                spot = bracket["training_spots"][1]
-                spot_name = spot.get("name", "Training spot")
-                location = spot.get("location", "")
-                if spot_name and location:
-                    # Determine target for alternative spot
-                    if combat_level < 50:
-                        target_stats = "50 Attack, 50 Strength, 50 Defence"
-                        target = "Reach 50 combat level"
-                    elif combat_level < 70:
-                        target_stats = "70 Attack, 70 Strength, 70 Defence"
-                        target = "Reach 70 in all combat stats"
-                    else:
-                        target_stats = "85 Attack, 85 Strength, 85 Defence"
-                        target = "Reach 85+ combat stats"
-                    
-                    alt_training = AdviceItem(
-                        title=f"Train at {spot_name} until {target_stats}",
-                        why_now=f"At {combat_level} combat, train at {spot_name} ({location}) to reach {target_stats} for {target}.",
-                        steps=[
-                            f"Travel to {location}",
-                            f"Unlock access to {spot_name} (complete required quests if needed)",
-                            f"Kill monsters at {spot_name} to gain combat XP until reaching {target_stats}",
-                            f"Achieve target: {target}"
-                        ],
-                        why_over_alternatives=f"{spot_name} is an alternative training spot. Better than lower-level spots and provides good XP rates."
-                    )
-                    primary_action = get_primary_action(alt_training)
-                    if primary_action not in primary_actions:
-                        items.append(alt_training)
-                        primary_actions.add(primary_action)
+    return StrategyCard(
+        title="Efficient Combat Training Path (Mid-game)",
+        why=why,
+        unlocks=unlocks,
+        next_actions=next_actions[:3],
+        unlock_path_context="mid_game_combat",
+        build_context="general_melee"
+    )
+
+
+def get_nmz_efficiency_strategy(profile: Profile, combat_level: int) -> StrategyCard:
+    """Generate strategy card for unlocking Nightmare Zone efficiency"""
+    attack = profile.skills.get("attack", 1)
+    strength = profile.skills.get("strength", 1)
+    defence = profile.skills.get("defence", 1)
+    magic = profile.skills.get("magic", 1)
     
-    # Slot 3: Quest/Unlock (always include)
-    quest_item = get_quest_recommendation(profile, combat_level, total_level)
-    if quest_item:
-        primary_action = get_primary_action(quest_item)
-        # Check for duplicate
-        if primary_action not in primary_actions:
-            items.append(quest_item)
-            primary_actions.add(primary_action)
-        else:
-            # Use alternative quest
-            if profile.membership == "f2p":
-                alt_quest = AdviceItem(
-                    title="Complete Lost City Quest",
-                    why_now=f"Complete Lost City quest to unlock Dragon weapons and unlock prerequisite for Dragon Slayer.",
-                    steps=[
-                        "Train Crafting to 31+",
-                        "Start quest by talking to the Shanty Pass guard",
-                        "Navigate through the Lost City",
-                        "Claim quest rewards and Dragon weapon unlocks"
-                    ],
-                    requirements=["Crafting 31+"],
-                    rewards=["Dragon Dagger unlock", "Dragon Longsword unlock", "Access to Lost City"],
-                    why_over_alternatives="Lost City is a prerequisite for Dragon Slayer and unlocks Dragon weapons. Better than other early quests for combat progression."
-                )
-            else:
-                alt_quest = AdviceItem(
-                    title="Complete Tree Gnome Village Quest",
-                    why_now=f"Complete Tree Gnome Village quest for combat XP and Spirit Tree access.",
-                    steps=[
-                        "Meet requirements: 10+ Attack recommended",
-                        "Start quest by talking to King Bolren in Tree Gnome Village",
-                        "Complete quest objectives",
-                        "Claim combat XP rewards and Spirit Tree unlock"
-                    ],
-                    requirements=["10+ Attack recommended"],
-                    rewards=["Combat XP", "Spirit Tree transportation unlock"],
-                    why_over_alternatives="Tree Gnome Village provides early combat XP and unlocks Spirit Tree transportation. Better than other early quests for utility."
-                )
-            primary_action = get_primary_action(alt_quest)
-            if primary_action not in primary_actions:
-                items.append(alt_quest)
-                primary_actions.add(primary_action)
+    why = "Nightmare Zone (NMZ) is the most AFK and efficient combat training method in the game. Unlocking NMZ efficiency requires completing Dream Mentor quest and setting up proper gear. This enables hours of AFK training with excellent XP rates, making it essential for reaching high combat levels."
     
-    # Ensure exactly 3 items
-    return items[:3]
+    unlocks = [
+        "Access to Nightmare Zone (best AFK combat training)",
+        "Ability to use Dharok's set for maximum XP rates",
+        "Access to NMZ rewards (imbued rings, herb boxes)",
+        "Efficient path to 99 combat stats",
+        "Foundation for high-level PvM and bossing"
+    ]
+    
+    next_actions = []
+    if combat_level < 70:
+        next_actions.append(f"Reach 70+ combat level (currently {combat_level})")
+    if attack < 70 or strength < 70 or defence < 70:
+        next_actions.append("Reach 70+ in Attack, Strength, and Defence")
+    if magic < 50:
+        next_actions.append(f"Train Magic to 50+ (currently {magic}) for Dream Mentor quest")
+    if len(next_actions) == 0:
+        next_actions.append("Complete Dream Mentor quest")
+        next_actions.append("Obtain Dharok's set or best available melee gear")
+    
+    return StrategyCard(
+        title="Unlock Nightmare Zone Efficiency",
+        why=why,
+        unlocks=unlocks,
+        next_actions=next_actions[:3],
+        unlock_path_context="nmz_setup",
+        build_context="nmz_melee"
+    )
+
+
+def get_strategies(profile: Profile) -> List[StrategyCard]:
+    """Generate strategy cards based on player profile"""
+    combat_level = calculate_combat_level(profile.skills)
+    total_level = sum(profile.skills.values())
+    
+    # Check if beginner - return empty (beginners use beginner advice)
+    if is_beginner_player(combat_level, total_level):
+        return []
+    
+    strategies = []
+    
+    # Strategy 1: Barrows Gloves (if not already obtained and combat >= 50)
+    cooking = profile.skills.get("cooking", 1)
+    fishing = profile.skills.get("fishing", 1)
+    thieving = profile.skills.get("thieving", 1)
+    firemaking = profile.skills.get("firemaking", 1)
+    magic = profile.skills.get("magic", 1)
+    
+    # Check if player needs Barrows Gloves (if any requirement is not met)
+    needs_barrows_gloves = (
+        combat_level >= 50 and 
+        (cooking < 40 or fishing < 53 or thieving < 53 or firemaking < 50 or magic < 59)
+    )
+    
+    if needs_barrows_gloves:
+        strategies.append(get_barrows_gloves_strategy(profile, combat_level))
+    
+    # Strategy 2: Mid-game Combat Training (if combat 50-100)
+    attack = profile.skills.get("attack", 1)
+    strength = profile.skills.get("strength", 1)
+    defence = profile.skills.get("defence", 1)
+    
+    needs_mid_game_training = (
+        50 <= combat_level < 100 and
+        (attack < 85 or strength < 85 or defence < 85)
+    )
+    
+    if needs_mid_game_training:
+        strategies.append(get_mid_game_combat_training_strategy(profile, combat_level))
+    
+    # Strategy 3: NMZ Efficiency (if combat >= 70 and P2P)
+    if profile.membership == "p2p" and combat_level >= 70:
+        strategies.append(get_nmz_efficiency_strategy(profile, combat_level))
+    
+    # Ensure at least one strategy is returned
+    if len(strategies) == 0:
+        # Fallback: return mid-game training if no specific strategy matches
+        if combat_level >= 50:
+            strategies.append(get_mid_game_combat_training_strategy(profile, combat_level))
+    
+    return strategies[:3]  # Return up to 3 strategies
+
+
+def get_beginner_cards(profile: Profile, combat_level: int) -> List[BeginnerCard]:
+    """Generate beginner power path cards in linear sequence"""
+    membership = profile.membership
+    attack = profile.skills.get("attack", 1)
+    strength = profile.skills.get("strength", 1)
+    defence = profile.skills.get("defence", 1)
+    
+    cards = []
+    
+    # Card 1: Primary Unlock - First combat power spike (quest-based XP)
+    if membership == "f2p":
+        cards.append(BeginnerCard(
+            title="Complete Cook's Assistant",
+            why_now="Unlocks early Cooking XP and is a prerequisite for Recipe for Disaster later. Fastest completion time with no combat required.",
+            action="Talk to the Cook in Lumbridge Castle kitchen and complete the quest by collecting ingredients.",
+            next_unlock="300 Cooking XP, access to cooking, prerequisite for Recipe for Disaster",
+            optional=False,
+            details="Location: Lumbridge Castle kitchen. Ingredients needed: Bucket of milk (from cow field), Egg (from chicken coop), Flour (use wheat on windmill). Alternative: You can skip this if you plan to train Cooking manually, but it's required for later content."
+        ))
+    else:
+        cards.append(BeginnerCard(
+            title="Complete Waterfall Quest",
+            why_now="Unlocks first combat power spike: 13,750 Attack and Strength XP (brings you to ~30/30). Better than hours of manual training.",
+            action="Talk to Almera in Barbarian Village to start the quest. Requires 30 Agility or 30 Strength (train at Draynor agility course if needed).",
+            next_unlock="13,750 Attack XP, 13,750 Strength XP, access to Waterfall Dungeon",
+            optional=False,
+            details="Location: Barbarian Village. Requirements: 30 Agility OR 30 Strength. If you don't have these, train at Draynor Village agility course or Al Kharid Warriors first. Alternative: You can skip this quest and train manually, but it will take much longer to reach level 30."
+        ))
+    
+    # Card 2: Required Follow-up - Equip gear AFTER quest XP
+    if membership == "p2p":
+        cards.append(BeginnerCard(
+            title="Equip Iron Gear",
+            why_now="After Waterfall Quest XP brings you to level 30, Iron gear enables effective early training. Better stats than Bronze for minimal cost.",
+            action="Purchase Iron equipment from shops: Scimitar from Zeke's in Al Kharid (224 GP), armor from Horvik's in Varrock (~528 GP total).",
+            next_unlock="Iron Scimitar, Iron Full Helm, Iron Chainbody, Iron Platelegs (enables efficient training loop)",
+            optional=False,
+            details="Locations: Zeke's Scimitar Shop in Al Kharid, Horvik's Armour Shop in Varrock. Total cost: ~750 GP. Alternative: You can use Bronze gear, but Iron provides significantly better stats for minimal cost increase."
+        ))
+    else:
+        cards.append(BeginnerCard(
+            title="Equip Iron Gear",
+            why_now="Iron gear is the best F2P starter equipment. Enables safe early training with minimal cost investment.",
+            action="Purchase Iron equipment from shops: Scimitar from Zeke's in Al Kharid (224 GP), armor from Horvik's in Varrock (~528 GP total).",
+            next_unlock="Iron Scimitar, Iron Full Helm, Iron Chainbody, Iron Platelegs (enables efficient training loop)",
+            optional=False,
+            details="Locations: Zeke's Scimitar Shop in Al Kharid, Horvik's Armour Shop in Varrock. Total cost: ~750 GP. Alternative: You can use Bronze gear, but Iron provides significantly better stats for minimal cost increase."
+        ))
+    
+    # Card 3: Primary Unlock - Mobility power spike (P2P only)
+    if membership == "p2p":
+        cards.append(BeginnerCard(
+            title="Complete Tree Gnome Village",
+            why_now="Unlocks first mobility power spike: Spirit Tree network access. Enables efficient travel for future quests and training.",
+            action="Talk to King Bolren in Tree Gnome Village to start the quest. Requires 10+ Attack recommended.",
+            next_unlock="Spirit Tree network access, combat XP rewards, efficient transportation",
+            optional=False,
+            details="Location: Tree Gnome Village (west of Ardougne). Requirements: 10+ Attack recommended. Alternative: You can skip this and walk everywhere, but Spirit Trees save significant time for future questing."
+        ))
+    
+    # Card 4: Optional stat balancing (only if uneven)
+    needs_training = False
+    if membership == "p2p":
+        if attack < 25 or strength < 25:
+            needs_training = True
+            cards.append(BeginnerCard(
+                title="Balance Combat Stats",
+                why_now="If you skipped Waterfall Quest or your stats are uneven, training balances them for efficient progression.",
+                action="Train at Lumbridge Cows (north of Lumbridge) until reaching balanced stats (15/15/15 minimum).",
+                next_unlock="Balanced combat stats (15/15/15 minimum), profitable cowhide drops",
+                optional=True,
+                details="Location: Lumbridge cow field (north of Lumbridge). Target: 15 Attack, 15 Strength, 15 Defence minimum. Alternative: If you completed Waterfall Quest and stats are balanced, you can skip this step entirely."
+            ))
+    else:
+        if attack < 15 or strength < 15 or defence < 15:
+            needs_training = True
+            cards.append(BeginnerCard(
+                title="Balance Combat Stats",
+                why_now="If your combat stats are below 15/15/15, training balances them for efficient progression.",
+                action="Train at Al Kharid Warriors (Al Kharid Palace, ground floor) until reaching balanced stats (20/20/20).",
+                next_unlock="Balanced combat stats (20/20/20), safe training location",
+                optional=True,
+                details="Location: Al Kharid Palace (ground floor). Target: 20 Attack, 20 Strength, 20 Defence. Alternative: If your stats are already balanced, you can skip this step entirely."
+            ))
+    
+    return cards
+
+
+def get_beginner_advice(profile: Profile, combat_level: int) -> list[AdviceItem]:
+    """Legacy function - kept for backward compatibility, but beginners should use get_beginner_cards()"""
+    # Return empty list - beginners should use card-based flow
+    return []
+
+
+def get_advice(profile: Profile) -> list[AdviceItem]:
+    """
+    Get advice for beginners only (returns AdviceItem list).
+    For non-beginners, use get_strategies() instead which returns Strategy Cards.
+    """
+    # Calculate metrics
+    combat_level = calculate_combat_level(profile.skills)
+    total_level = sum(profile.skills.values())
+    
+    # Check if beginner - return beginner path
+    if is_beginner_player(combat_level, total_level):
+        return get_beginner_advice(profile, combat_level)
+    
+    # Non-beginners should use strategies, not advice items
+    return []
 

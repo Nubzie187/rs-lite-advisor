@@ -1,0 +1,86 @@
+{
+  "1": {
+    "name": "Dragon Scimitar",
+    "tradeable": true,
+    "equipment": {
+      "slot": "weapon"
+    },
+    "requirements": {
+      "attack": 60
+    }
+  },
+  "2": {
+    "name": "Abyssal Whip",
+    "tradeable": true,
+    "equipment": {
+      "slot": "weapon"
+    },
+    "requirements": {
+      "attack": 70
+    }
+  },
+  "3": {
+    "name": "Dharok's Greataxe",
+    "tradeable": true,
+    "equipment": {
+      "slot": "weapon"
+    },
+    "requirements": {
+      "attack": 70,
+      "defence": 70
+    }
+  },
+  "4": {
+    "name": "Scythe of Vitur",
+    "tradeable": true,
+    "equipment": {
+      "slot": "weapon"
+    },
+    "requirements": {
+      "attack": 80
+    }
+  },
+  "5": {
+    "name": "Dragon Defender",
+    "tradeable": true,
+    "equipment": {
+      "slot": "offhand"
+    }
+  },
+  "6": {
+    "name": "Avernic Defender",
+    "tradeable": true,
+    "equipment": {
+      "slot": "offhand"
+    }
+  },
+  "7": {
+    "name": "Amulet of Glory",
+    "tradeable": true,
+    "equipment": {
+      "slot": "amulet"
+    }
+  },
+  "8": {
+    "name": "Amulet of Fury",
+    "tradeable": true,
+    "equipment": {
+      "slot": "amulet"
+    }
+  },
+  "9": {
+    "name": "Amulet of Torture",
+    "tradeable": true,
+    "equipment": {
+      "slot": "amulet"
+    }
+  },
+  "10": {
+    "name": "Berserker Ring",
+    "tradeable": true,
+    "equipment": {
+      "slot": "ring"
+    }
+  }
+}
+

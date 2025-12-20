@@ -1,0 +1,9 @@
+{
+  "Dragon Scimitar": {"attack": 60},
+  "Abyssal Whip": {"attack": 70},
+  "Dharok's Greataxe": {"attack": 70, "defence": 70},
+  "Scythe of Vitur": {"attack": 80},
+  "Rune Scimitar": {"attack": 40},
+  "Dragon Dagger": {"attack": 60}
+}
+

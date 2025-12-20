@@ -1,0 +1,51 @@
+{
+  "candidates": [
+    {"name": "Dragon Scimitar", "slot": "weapon", "member_only": true, "iron_ok": true, "tier_tags": ["budget", "progression"], "tags": ["strength", "accuracy"]},
+    {"name": "Abyssal Whip", "slot": "weapon", "member_only": true, "iron_ok": true, "tier_tags": ["progression", "spot_specific"], "tags": ["strength", "accuracy"]},
+    {"name": "Dharok's Greataxe", "slot": "weapon", "member_only": true, "iron_ok": true, "tier_tags": ["spot_specific", "bis"], "tags": ["strength", "set_piece", "hp_synergy"]},
+    {"name": "Scythe of Vitur", "slot": "weapon", "member_only": true, "iron_ok": false, "tier_tags": ["bis"], "tags": ["strength", "accuracy"]},
+    {"name": "Rune Scimitar", "slot": "weapon", "member_only": false, "iron_ok": true, "tier_tags": ["budget"], "tags": ["strength"]},
+    {"name": "Dragon Dagger", "slot": "weapon", "member_only": true, "iron_ok": true, "tier_tags": ["budget"], "tags": ["strength"]},
+    
+    {"name": "Rune Defender", "slot": "offhand", "member_only": true, "iron_ok": true, "tier_tags": ["budget", "progression"], "tags": ["strength", "accuracy"]},
+    {"name": "Dragon Defender", "slot": "offhand", "member_only": true, "iron_ok": true, "tier_tags": ["progression", "spot_specific"], "tags": ["strength", "accuracy"]},
+    {"name": "Avernic Defender", "slot": "offhand", "member_only": true, "iron_ok": false, "tier_tags": ["bis"], "tags": ["strength", "accuracy"]},
+    
+    {"name": "Rune Full Helm", "slot": "helm", "member_only": false, "iron_ok": true, "tier_tags": ["budget", "progression"], "tags": []},
+    {"name": "Dragon Med Helm", "slot": "helm", "member_only": true, "iron_ok": true, "tier_tags": ["budget"], "tags": ["set_piece"]},
+    {"name": "Torag's Helm", "slot": "helm", "member_only": true, "iron_ok": true, "tier_tags": ["progression"], "tags": ["set_piece"]},
+    {"name": "Dharok's Helm", "slot": "helm", "member_only": true, "iron_ok": true, "tier_tags": ["spot_specific", "bis"], "tags": ["set_piece", "hp_synergy"]},
+    
+    {"name": "Rune Chainbody", "slot": "body", "member_only": false, "iron_ok": true, "tier_tags": ["budget"], "tags": []},
+    {"name": "Dragon Chainbody", "slot": "body", "member_only": true, "iron_ok": true, "tier_tags": ["budget"], "tags": ["set_piece"]},
+    {"name": "Torag's Platebody", "slot": "body", "member_only": true, "iron_ok": true, "tier_tags": ["progression", "spot_specific"], "tags": ["set_piece"]},
+    {"name": "Dharok's Platebody", "slot": "body", "member_only": true, "iron_ok": true, "tier_tags": ["spot_specific", "bis"], "tags": ["set_piece", "hp_synergy"]},
+    
+    {"name": "Rune Platelegs", "slot": "legs", "member_only": false, "iron_ok": true, "tier_tags": ["budget"], "tags": []},
+    {"name": "Dragon Platelegs", "slot": "legs", "member_only": true, "iron_ok": true, "tier_tags": ["budget"], "tags": ["set_piece"]},
+    {"name": "Torag's Platelegs", "slot": "legs", "member_only": true, "iron_ok": true, "tier_tags": ["progression", "spot_specific"], "tags": ["set_piece"]},
+    {"name": "Dharok's Platelegs", "slot": "legs", "member_only": true, "iron_ok": true, "tier_tags": ["spot_specific", "bis"], "tags": ["set_piece", "hp_synergy"]},
+    
+    {"name": "Rune Boots", "slot": "boots", "member_only": false, "iron_ok": true, "tier_tags": ["budget"], "tags": []},
+    {"name": "Dragon Boots", "slot": "boots", "member_only": true, "iron_ok": true, "tier_tags": ["progression", "spot_specific"], "tags": ["strength"]},
+    {"name": "Primordial Boots", "slot": "boots", "member_only": true, "iron_ok": false, "tier_tags": ["bis"], "tags": ["strength"]},
+    
+    {"name": "Combat Bracelet", "slot": "gloves", "member_only": true, "iron_ok": true, "tier_tags": ["budget"], "tags": []},
+    {"name": "Barrows Gloves", "slot": "gloves", "member_only": true, "iron_ok": true, "tier_tags": ["progression", "spot_specific", "bis"], "tags": ["strength", "accuracy"]},
+    
+    {"name": "Amulet of Strength", "slot": "amulet", "member_only": false, "iron_ok": true, "tier_tags": ["budget"], "tags": ["strength"]},
+    {"name": "Amulet of Glory", "slot": "amulet", "member_only": true, "iron_ok": true, "tier_tags": ["budget"], "tags": ["strength"]},
+    {"name": "Amulet of Fury", "slot": "amulet", "member_only": true, "iron_ok": true, "tier_tags": ["progression", "spot_specific"], "tags": ["strength", "accuracy"]},
+    {"name": "Amulet of Torture", "slot": "amulet", "member_only": true, "iron_ok": false, "tier_tags": ["spot_specific", "bis"], "tags": ["strength", "hp_synergy"]},
+    
+    {"name": "Warrior Ring", "slot": "ring", "member_only": true, "iron_ok": true, "tier_tags": ["budget"], "tags": ["strength"]},
+    {"name": "Berserker Ring", "slot": "ring", "member_only": true, "iron_ok": true, "tier_tags": ["progression"], "tags": ["strength"]},
+    {"name": "Berserker Ring (i)", "slot": "ring", "member_only": true, "iron_ok": true, "tier_tags": ["spot_specific"], "tags": ["strength"]},
+    {"name": "Ultor Ring", "slot": "ring", "member_only": true, "iron_ok": false, "tier_tags": ["bis"], "tags": ["strength"]},
+    
+    {"name": "Obsidian Cape", "slot": "cape", "member_only": true, "iron_ok": true, "tier_tags": ["budget", "progression"], "tags": ["strength"]},
+    {"name": "Fire Cape", "slot": "cape", "member_only": true, "iron_ok": true, "tier_tags": ["spot_specific"], "tags": ["strength"]},
+    {"name": "Infernal Cape", "slot": "cape", "member_only": true, "iron_ok": false, "tier_tags": ["bis"], "tags": ["strength"]}
+  ]
+}
+

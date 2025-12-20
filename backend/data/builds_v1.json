@@ -3,15 +3,68 @@
     {
       "context": "nmz_melee",
       "name": "Nightmare Zone Melee Setup",
-      "gear": [
-        "Dharok's Platebody",
-        "Dharok's Platelegs",
-        "Dharok's Helm",
-        "Dharok's Greataxe",
-        "Barrows Gloves",
-        "Dragon Boots",
-        "Amulet of Torture",
-        "Berserker Ring (i)"
+      "gear_options": [
+        {
+          "id": "budget",
+          "gear": [
+            "Dragon Scimitar",
+            "Rune Defender",
+            "Rune Chainbody",
+            "Rune Platelegs",
+            "Rune Full Helm",
+            "Combat Bracelet",
+            "Rune Boots",
+            "Amulet of Strength",
+            "Warrior Ring",
+            "Obsidian Cape"
+          ]
+        },
+        {
+          "id": "progression",
+          "gear": [
+            "Abyssal Whip",
+            "Rune Defender",
+            "Torag's Platebody",
+            "Torag's Platelegs",
+            "Rune Full Helm",
+            "Barrows Gloves",
+            "Dragon Boots",
+            "Amulet of Fury",
+            "Berserker Ring",
+            "Obsidian Cape"
+          ]
+        },
+        {
+          "id": "spot_specific",
+          "gear": [
+            "Dharok's Greataxe",
+            "Dragon Defender",
+            "Dharok's Platebody",
+            "Dharok's Platelegs",
+            "Dharok's Helm",
+            "Barrows Gloves",
+            "Dragon Boots",
+            "Amulet of Torture",
+            "Berserker Ring (i)",
+            "Fire Cape",
+            "Rock Cake (for 1 HP method)"
+          ]
+        },
+        {
+          "id": "bis",
+          "gear": [
+            "Scythe of Vitur",
+            "Avernic Defender",
+            "Dharok's Platebody",
+            "Dharok's Platelegs",
+            "Dharok's Helm",
+            "Barrows Gloves",
+            "Primordial Boots",
+            "Amulet of Torture",
+            "Ultor Ring",
+            "Infernal Cape"
+          ]
+        }
       ],
       "inventory": [
         "Absorption Potions (x20+)",
@@ -36,15 +89,62 @@
     {
       "context": "general_melee",
       "name": "General Melee Combat Setup",
-      "gear": [
-        "Abyssal Whip or Tentacle Whip",
-        "Dragon Defender",
-        "Torag's Platebody",
-        "Torag's Platelegs",
-        "Barrows Gloves",
-        "Dragon Boots",
-        "Amulet of Fury",
-        "Berserker Ring"
+      "gear_options": [
+        {
+          "id": "budget",
+          "gear": [
+            "Dragon Scimitar",
+            "Dragon Defender",
+            "Dragon Chainbody",
+            "Dragon Platelegs",
+            "Dragon Med Helm",
+            "Combat Bracelet",
+            "Dragon Boots",
+            "Amulet of Glory",
+            "Warrior Ring"
+          ]
+        },
+        {
+          "id": "progression",
+          "gear": [
+            "Abyssal Whip or Tentacle Whip",
+            "Dragon Defender",
+            "Torag's Platebody",
+            "Torag's Platelegs",
+            "Barrows Gloves",
+            "Dragon Boots",
+            "Amulet of Fury",
+            "Berserker Ring"
+          ]
+        },
+        {
+          "id": "spot_specific",
+          "gear": [
+            "Abyssal Whip",
+            "Dragon Defender",
+            "Torag's Platebody",
+            "Torag's Platelegs",
+            "Barrows Gloves",
+            "Dragon Boots",
+            "Amulet of Fury",
+            "Berserker Ring",
+            "Slayer Helm (if on task)"
+          ]
+        },
+        {
+          "id": "bis",
+          "gear": [
+            "Tentacle Whip",
+            "Avernic Defender",
+            "Torag's Platebody",
+            "Torag's Platelegs",
+            "Barrows Gloves",
+            "Dragon Boots",
+            "Amulet of Torture",
+            "Berserker Ring (i)",
+            "Fire Cape"
+          ]
+        }
       ],
       "inventory": [
         "Super Combat Potions (x4)",

@@ -3,7 +3,7 @@ import os
 from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from models import Profile
+from models import Profile, PlayerSetup
 
 Base = declarative_base()
 
@@ -18,6 +18,9 @@ class ProfileModel(Base):
     goals = Column(Text, nullable=True)  # JSON array as string
     playtime_minutes = Column(Integer, default=0)
     skills = Column(Text, nullable=True)  # JSON dict as string
+    setup_style = Column(String, default="")
+    setup_priority = Column(String, default="")
+    setup_effort = Column(String, default="")
 
 
 # Database setup
@@ -75,6 +78,48 @@ def get_profile() -> Profile:
         db.close()
 
 
+def get_setup() -> PlayerSetup:
+    """Get the stored player setup or return default"""
+    db = SessionLocal()
+    try:
+        profile_row = db.query(ProfileModel).first()
+        if not profile_row:
+            return PlayerSetup()
+        
+        return PlayerSetup(
+            style=profile_row.setup_style or "",
+            priority=profile_row.setup_priority or "",
+            effort=profile_row.setup_effort or ""
+        )
+    finally:
+        db.close()
+
+
+def save_setup(setup: PlayerSetup):
+    """Save or update the player setup"""
+    db = SessionLocal()
+    try:
+        profile_row = db.query(ProfileModel).first()
+        
+        if profile_row:
+            # Update existing
+            profile_row.setup_style = setup.style
+            profile_row.setup_priority = setup.priority
+            profile_row.setup_effort = setup.effort
+        else:
+            # Create new profile with setup
+            profile_row = ProfileModel(
+                setup_style=setup.style,
+                setup_priority=setup.priority,
+                setup_effort=setup.effort
+            )
+            db.add(profile_row)
+        
+        db.commit()
+    finally:
+        db.close()
+
+
 def save_profile(profile: Profile):
     """Save or update the profile"""
     db = SessionLocal()
@@ -89,6 +134,7 @@ def save_profile(profile: Profile):
             profile_row.goals = json.dumps(profile.goals)
             profile_row.playtime_minutes = profile.playtime_minutes
             profile_row.skills = json.dumps(profile.skills)
+            # Note: setup fields are managed separately via save_setup()
         else:
             # Create new
             profile_row = ProfileModel(

@@ -14,7 +14,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
                 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
             min-height: 100vh;
             padding: 20px;
         }
@@ -26,8 +26,19 @@
 
         header {
             text-align: center;
-            color: white;
+            color: #2d3748;
             margin-bottom: 30px;
+        }
+
+        header > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        header > div > div {
+            flex: 1;
         }
 
         header h1 {
@@ -51,8 +62,8 @@
 
         .profile-section h2 {
             margin-bottom: 20px;
-            color: #667eea;
-            border-bottom: 2px solid #667eea;
+            color: #2d3748;
+            border-bottom: 2px solid #4a5568;
             padding-bottom: 10px;
         }
 
@@ -90,11 +101,15 @@
         }
 
         .skill-badge {
-            background: #667eea;
+            background: #4a5568;
             color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            min-width: 60px;
+            text-align: center;
+            display: inline-block;
+            font-weight: 500;
         }
 
         .button-group {
@@ -103,19 +118,24 @@
         }
 
         button {
-            padding: 12px 32px;
-            font-size: 1rem;
+            padding: 10px 20px;
+            font-size: 0.9375rem;
             font-weight: 600;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            background: #667eea;
+            background: #4a5568;
             color: white;
-            transition: background 0.3s;
+            transition: background 0.2s;
+            height: 40px;
+            min-height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         button:hover:not(:disabled) {
-            background: #5568d3;
+            background: #2d3748;
         }
 
         button:disabled {
@@ -132,8 +152,8 @@
 
         .advice-section h2 {
             margin-bottom: 20px;
-            color: #667eea;
-            border-bottom: 2px solid #667eea;
+            color: #2d3748;
+            border-bottom: 2px solid #4a5568;
             padding-bottom: 10px;
         }
 
@@ -151,13 +171,26 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
+        .beginner-card {
+            background: white;
+            border: 2px solid #4a5568;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         .advice-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+        .advice-card.selected {
+            border: 2px solid #4a5568 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        }
+
         .advice-card h3 {
-            color: #667eea;
+            color: #2d3748;
             margin-bottom: 12px;
             font-size: 1.3rem;
         }
@@ -220,7 +253,7 @@
 
         .loading {
             text-align: center;
-            color: #667eea;
+            color: #4a5568;
             padding: 20px;
         }
 
@@ -239,13 +272,37 @@
         }
 
         .build-card h3 {
-            color: #667eea;
+            color: #2d3748;
             margin-bottom: 15px;
             font-size: 1.4rem;
         }
 
         .build-section {
             margin-bottom: 15px;
+        }
+
+        .gear-option-pill {
+            padding: 6px 14px;
+            border: 2px solid #718096;
+            background: #f7fafc;
+            color: #2d3748;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            text-transform: capitalize;
+            font-weight: 500;
+        }
+
+        .gear-option-pill:hover {
+            border-color: #4a5568;
+            background: #edf2f7;
+        }
+
+        .gear-option-pill.active {
+            background: #2d3748;
+            color: white;
+            border-color: #2d3748;
         }
 
         .build-section strong {
@@ -266,8 +323,155 @@
             line-height: 1.5;
         }
 
+        .strategy-card {
+            background: #ffffff;
+            border: 2px solid #4a5568;
+            border-radius: 8px;
+            padding: 25px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: #2d3748;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .strategy-card h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .strategy-why {
+            margin-bottom: 20px;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            color: #4a5568;
+        }
+
+        .strategy-unlocks {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .strategy-unlocks h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .strategy-unlocks ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+
+        .strategy-unlocks li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .strategy-actions {
+            margin-bottom: 20px;
+        }
+
+        .strategy-actions h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .strategy-actions ul {
+            margin-left: 20px;
+            list-style-type: disc;
+        }
+
+        .strategy-actions li {
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .strategy-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .strategy-btn {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            transition: all 0.2s;
+            height: 40px;
+            min-height: 40px;
+        }
+
+        .strategy-btn:hover {
+            background: #2d3748;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .setup-card {
+            background: white;
+            border: 2px solid #4a5568;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .setup-option {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .setup-option:hover {
+            border-color: #4a5568;
+            background: #edf2f7;
+            transform: translateY(-1px);
+        }
+
+        .setup-option.selected {
+            border-color: #4a5568;
+            background: #e2e8f0;
+        }
+
+        .setup-option-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .setup-option-desc {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .setup-progress {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
         .details-link {
-            color: #667eea;
+            color: #4a5568;
             text-decoration: underline;
             cursor: pointer;
             font-size: 0.9rem;
@@ -275,7 +479,7 @@
         }
 
         .details-link:hover {
-            color: #764ba2;
+            color: #2d3748;
         }
 
         .modal {
@@ -306,12 +510,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid #4a5568;
             padding-bottom: 15px;
         }
 
         .modal-header h2 {
-            color: #667eea;
+            color: #2d3748;
             margin: 0;
         }
 
@@ -371,35 +575,44 @@
 <body>
     <div class="container">
         <header>
-            <h1>RuneScape Lite Advisor</h1>
-            <p>Get personalized advice for your RuneScape journey</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div>
+                    <h1>RuneScape Lite Advisor</h1>
+                    <p>Get personalized advice for your RuneScape journey</p>
+                </div>
+                <button 
+                    id="profile-setup-btn"
+                    onclick="openSetupForEditing()"
+                    title="Edit Player Setup"
+                >
+                    ⚙️ Profile
+                </button>
+            </div>
         </header>
 
         <section class="profile-section">
-            <h2>Your Profile</h2>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <h2 style="margin: 0;">Your Profile</h2>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <label style="font-weight: 600; color: #555; font-size: 0.9rem;">Membership:</label>
+                    <div style="display: flex; background: #e2e8f0; border-radius: 20px; padding: 2px; gap: 2px;">
+                        <button 
+                            id="membership-f2p-btn"
+                            onclick="setMembership('f2p')"
+                            style="padding: 6px 16px; border: none; border-radius: 18px; background: transparent; color: #4a5568; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; font-weight: 500; height: auto; min-height: auto;"
+                        >F2P</button>
+                        <button 
+                            id="membership-p2p-btn"
+                            onclick="setMembership('p2p')"
+                            style="padding: 6px 16px; border: none; border-radius: 18px; background: transparent; color: #4a5568; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; font-weight: 500; height: auto; min-height: auto;"
+                        >Members</button>
+                    </div>
+                </div>
+            </div>
+            <div id="membership-message" style="font-size: 0.85rem; color: #e53e3e; min-height: 20px; margin-bottom: 10px;"></div>
             <div id="profile-content">
                 <div class="loading">Loading profile...</div>
             </div>
-        </section>
-
-        <section class="profile-section">
-            <h2>Profile Settings</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                <div>
-                    <label for="membership-select" style="display: block; font-weight: 600; color: #555; margin-bottom: 8px;">Membership</label>
-                    <select 
-                        id="membership-select"
-                        style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem;"
-                    >
-                        <option value="f2p">Free-to-Play</option>
-                        <option value="p2p">Members</option>
-                    </select>
-                </div>
-                <div style="display: flex; align-items: flex-end;">
-                    <button id="save-membership-btn" onclick="saveMembership()" style="padding: 12px 24px; width: 100%;">Save Membership</button>
-                </div>
-            </div>
-            <div id="membership-message" class="message"></div>
         </section>
 
         <section class="profile-section">
@@ -415,44 +628,37 @@
                         onkeypress="if(event.key === 'Enter') importHiscores()"
                     />
                 </div>
-                <button id="import-btn" onclick="importHiscores()" style="padding: 12px 24px; white-space: nowrap;">Import from Hiscores</button>
+                <button id="import-btn" onclick="importHiscores()" style="white-space: nowrap;">Import from Hiscores</button>
             </div>
             <div id="import-message" class="message"></div>
-        </section>
-
-        <section class="profile-section">
-            <div class="button-group">
+            <div style="display: flex; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
                 <button id="get-advice-btn" onclick="getAdvice()">Get Advice</button>
-                <button id="view-builds-btn" onclick="viewBuilds()">View Builds</button>
             </div>
-            <div id="message" class="message"></div>
+            <div id="message" class="message" style="margin-top: 10px;"></div>
         </section>
 
-        <section class="advice-section">
+        <section id="setup-section" class="profile-section" style="display: none;">
+            <h2>Player Setup</h2>
+            <div id="setup-content">
+                <!-- Setup cards will be rendered here -->
+            </div>
+        </section>
+
+
+        <section class="profile-section" id="recommendations-section" style="display: none;">
             <h2>Recommendations</h2>
-            <div id="advice-content">
-                <p class="placeholder">Click "Get Advice" to see recommendations</p>
+            <div id="recommendations-content">
+                <p class="placeholder">Loading recommendations...</p>
             </div>
         </section>
 
-        <section id="builds-section" class="profile-section" style="display: none;">
-            <h2>Build Cards</h2>
-            <div style="margin-bottom: 15px;">
-                <label for="build-context" style="display: block; font-weight: 600; color: #555; margin-bottom: 8px;">Context</label>
-                <select 
-                    id="build-context"
-                    style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem;"
-                    onchange="viewBuilds()"
-                >
-                    <option value="">All Builds</option>
-                    <option value="nmz_melee">Nightmare Zone Melee</option>
-                    <option value="general_melee">General Melee</option>
-                </select>
-            </div>
-            <div id="builds-content">
-                <p class="placeholder">Select a context and click "View Builds"</p>
+        <section class="profile-section" id="next-strategy-section">
+            <h2>Next Action</h2>
+            <div id="next-strategy-content">
+                <p class="placeholder">Click Get Advice to generate your next action.</p>
             </div>
         </section>
+
     </div>
 
     <!-- Details Modal -->
@@ -470,10 +676,284 @@
     <script>
         const API_URL = window.location.origin;
 
-        // Load profile on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            loadProfile();
+        // Setup state
+        let setupState = {
+            style: "",
+            priority: "",
+            effort: ""
+        };
+        let currentSetupStep = 0;
+        const SETUP_STORAGE_KEY = "rsla_player_profile";
+
+        // Load setup from localStorage
+        function loadSetupFromStorage() {
+            try {
+                const stored = localStorage.getItem(SETUP_STORAGE_KEY);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    if (parsed.style || parsed.priority || parsed.effort) {
+                        return {
+                            style: parsed.style || "",
+                            priority: parsed.priority || "",
+                            effort: parsed.effort || ""
+                        };
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load setup from localStorage:', error);
+            }
+            return { style: "", priority: "", effort: "" };
+        }
+
+        // Save setup to localStorage
+        function saveSetupToStorage() {
+            try {
+                localStorage.setItem(SETUP_STORAGE_KEY, JSON.stringify(setupState));
+            } catch (error) {
+                console.error('Failed to save setup to localStorage:', error);
+            }
+        }
+
+        // Clear setup from localStorage
+        function clearSetupStorage() {
+            try {
+                localStorage.removeItem(SETUP_STORAGE_KEY);
+            } catch (error) {
+                console.error('Failed to clear setup from localStorage:', error);
+            }
+        }
+
+        // Load profile and check setup on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadProfile();
+            await checkSetup();
         });
+
+        async function checkSetup() {
+            // Load from localStorage first
+            const localSetup = loadSetupFromStorage();
+            
+            try {
+                const response = await fetch(`${API_URL}/setup`);
+                if (response.ok) {
+                    const serverSetup = await response.json();
+                    // Merge: prefer localStorage if it has values, otherwise use server
+                    setupState = {
+                        style: localSetup.style || serverSetup.style || "",
+                        priority: localSetup.priority || serverSetup.priority || "",
+                        effort: localSetup.effort || serverSetup.effort || ""
+                    };
+                    
+                    // Save merged state to localStorage
+                    saveSetupToStorage();
+                } else {
+                    // Use localStorage if server fails
+                    setupState = localSetup;
+                }
+            } catch (error) {
+                console.error('Failed to load setup from server:', error);
+                // Use localStorage if server fails
+                setupState = localSetup;
+            }
+            
+            // Check if setup is complete
+            if (setupState.style && setupState.priority && setupState.effort) {
+                // Setup complete - hide setup
+                document.getElementById('setup-section').style.display = 'none';
+            } else {
+                // Setup incomplete - show setup flow
+                currentSetupStep = setupState.style ? (setupState.priority ? 2 : 1) : 0;
+                displaySetupCard();
+                document.getElementById('setup-section').style.display = 'block';
+            }
+        }
+
+
+        function continueWithSetup() {
+            // Hide setup section
+            document.getElementById('setup-section').style.display = 'none';
+        }
+
+        function openSetupForEditing() {
+            // Open setup flow for editing without resetting progress
+            // Determine which step to show based on current state
+            currentSetupStep = setupState.style ? (setupState.priority ? 2 : 1) : 0;
+            displaySetupCard();
+            document.getElementById('setup-section').style.display = 'block';
+            
+            // Scroll to setup section
+            document.getElementById('setup-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetSetup() {
+            // Clear localStorage and reset state
+            clearSetupStorage();
+            setupState = { style: "", priority: "", effort: "" };
+            currentSetupStep = 0;
+            
+            // Clear server state
+            fetch(`${API_URL}/setup`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(setupState),
+            }).catch(error => {
+                console.error('Failed to reset setup on server:', error);
+            });
+            
+            // Show setup flow from beginning
+            displaySetupCard();
+        }
+
+        function displaySetupCard() {
+            const setupContent = document.getElementById('setup-content');
+            const setupSection = document.getElementById('setup-section');
+            
+            if (!setupSection) return;
+            
+            const steps = [
+                {
+                    title: "Combat Style",
+                    options: [
+                        { value: "melee", label: "Melee", desc: "Close-range combat with swords, scimitars, and melee weapons" },
+                        { value: "ranged", label: "Ranged", desc: "Long-range combat with bows, crossbows, and throwing weapons" },
+                        { value: "mage", label: "Mage", desc: "Magic combat with spells, staves, and magical attacks" }
+                    ],
+                    field: "style"
+                },
+                {
+                    title: "Priority",
+                    options: [
+                        { value: "fast", label: "Fast progress", desc: "Prioritize speed and efficiency over cost or safety" },
+                        { value: "safe", label: "Safe & steady", desc: "Focus on safe methods and steady progression" },
+                        { value: "cheap", label: "Cheap/low-GP", desc: "Minimize costs and use budget-friendly methods" }
+                    ],
+                    field: "priority"
+                },
+                {
+                    title: "Effort",
+                    options: [
+                        { value: "afk", label: "AFK-ish", desc: "Prefer methods that require minimal attention" },
+                        { value: "normal", label: "Normal", desc: "Standard gameplay with moderate attention required" },
+                        { value: "sweaty", label: "Sweaty", desc: "Maximum efficiency with high attention and effort" }
+                    ],
+                    field: "effort"
+                }
+            ];
+
+            if (currentSetupStep >= steps.length) {
+                // Setup complete, save and hide
+                saveSetupAndContinue();
+                return;
+            }
+
+            const step = steps[currentSetupStep];
+            const selectedValue = setupState[step.field];
+
+            setupContent.innerHTML = `
+                <div class="setup-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div class="setup-progress">Setup ${currentSetupStep + 1}/3</div>
+                        <a href="#" onclick="resetSetup(); return false;" style="color: #4a5568; text-decoration: none; font-size: 0.9rem;">Reset setup</a>
+                    </div>
+                    <h3 style="color: #2d3748; margin-bottom: 20px; text-align: center;">${step.title}</h3>
+                    <div>
+                        ${step.options.map(option => `
+                            <div 
+                                class="setup-option ${selectedValue === option.value ? 'selected' : ''}"
+                                onclick="selectSetupOption('${step.field}', '${option.value}')"
+                            >
+                                <div class="setup-option-title">${option.label}</div>
+                                <div class="setup-option-desc">${option.desc}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 20px;">
+                        <button 
+                            onclick="previousSetupStep()" 
+                            ${currentSetupStep === 0 ? 'disabled' : ''}
+                            style="padding: 10px 20px; background: ${currentSetupStep === 0 ? '#ccc' : '#4a5568'}; color: white; border: none; border-radius: 6px; cursor: ${currentSetupStep === 0 ? 'not-allowed' : 'pointer'}; font-weight: 600; flex: 1; height: 40px; min-height: 40px;"
+                        >
+                            ← Back
+                        </button>
+                        <button 
+                            onclick="nextSetupStep()" 
+                            ${!selectedValue ? 'disabled' : ''}
+                            style="padding: 10px 20px; background: ${!selectedValue ? '#ccc' : '#4a5568'}; color: white; border: none; border-radius: 6px; cursor: ${!selectedValue ? 'not-allowed' : 'pointer'}; font-weight: 600; flex: 1; height: 40px; min-height: 40px;"
+                        >
+                            Next →
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function selectSetupOption(field, value) {
+            setupState[field] = value;
+            
+            // Save to localStorage immediately
+            saveSetupToStorage();
+            
+            displaySetupCard();
+            
+            // Auto-save to server on selection
+            try {
+                await fetch(`${API_URL}/setup`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(setupState),
+                });
+            } catch (error) {
+                console.error('Failed to save setup to server:', error);
+            }
+        }
+
+        function nextSetupStep() {
+            const currentValue = currentSetupStep === 0 ? setupState.style : 
+                                 currentSetupStep === 1 ? setupState.priority : 
+                                 setupState.effort;
+            
+            if (currentValue) {
+                currentSetupStep++;
+                displaySetupCard();
+            }
+        }
+
+        function previousSetupStep() {
+            if (currentSetupStep > 0) {
+                currentSetupStep--;
+                displaySetupCard();
+            }
+        }
+
+        async function saveSetupAndContinue() {
+            // Save to localStorage
+            saveSetupToStorage();
+            
+            try {
+                await fetch(`${API_URL}/setup`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(setupState),
+                });
+            } catch (error) {
+                console.error('Failed to save setup to server:', error);
+            }
+            
+            // Check if setup is now complete
+            if (setupState.style && setupState.priority && setupState.effort) {
+                // Setup complete - hide setup
+                document.getElementById('setup-section').style.display = 'none';
+            } else {
+                // Still incomplete, just update the card
+                displaySetupCard();
+            }
+        }
 
         async function loadProfile() {
             try {
@@ -497,6 +977,8 @@
             }
         }
 
+
+
         function displayProfile(profile) {
             const content = document.getElementById('profile-content');
             
@@ -506,11 +988,8 @@
                 playerNameInput.value = profile.player_name || '';
             }
             
-            // Update membership dropdown if it exists
-            const membershipSelect = document.getElementById('membership-select');
-            if (membershipSelect) {
-                membershipSelect.value = profile.membership || 'f2p';
-            }
+            // Update membership toggle if it exists
+            updateMembershipToggle(profile.membership || 'f2p');
             
             const skillsList = Object.entries(profile.skills || {})
                 .map(([skill, level]) => `<span class="skill-badge">${skill}: ${level}</span>`)
@@ -546,15 +1025,30 @@
             `;
         }
 
-        async function saveMembership() {
-            const membershipSelect = document.getElementById('membership-select');
-            const saveBtn = document.getElementById('save-membership-btn');
-            const membershipMessage = document.getElementById('membership-message');
-            const membership = membershipSelect.value;
+        function updateMembershipToggle(membership) {
+            const f2pBtn = document.getElementById('membership-f2p-btn');
+            const p2pBtn = document.getElementById('membership-p2p-btn');
+            if (!f2pBtn || !p2pBtn) return;
 
-            saveBtn.disabled = true;
-            membershipMessage.className = 'message';
-            membershipMessage.textContent = 'Saving...';
+            if (membership === 'p2p') {
+                f2pBtn.style.background = 'transparent';
+                f2pBtn.style.color = '#555';
+                p2pBtn.style.background = '#4a5568';
+                p2pBtn.style.color = 'white';
+            } else {
+                f2pBtn.style.background = '#4a5568';
+                f2pBtn.style.color = 'white';
+                p2pBtn.style.background = 'transparent';
+                p2pBtn.style.color = '#555';
+            }
+        }
+
+        async function setMembership(membership) {
+            const membershipMessage = document.getElementById('membership-message');
+            membershipMessage.textContent = '';
+
+            // Update toggle immediately for better UX
+            updateMembershipToggle(membership);
 
             try {
                 // Get current profile
@@ -581,17 +1075,17 @@
                     throw new Error(errorText || 'Failed to save membership');
                 }
 
-                membershipMessage.className = 'message show';
-                membershipMessage.textContent = 'Membership saved successfully!';
-
                 // Refresh profile display
                 await loadProfile();
             } catch (error) {
                 console.error('Failed to save membership:', error);
-                membershipMessage.className = 'message error show';
                 membershipMessage.textContent = error.message || 'Error saving membership';
-            } finally {
-                saveBtn.disabled = false;
+                // Revert toggle to previous state
+                const profileResponse = await fetch(`${API_URL}/profile`);
+                if (profileResponse.ok) {
+                    const profile = await profileResponse.json();
+                    updateMembershipToggle(profile.membership || 'f2p');
+                }
             }
         }
 
@@ -646,48 +1140,403 @@
             }
         }
 
+        let beginnerCards = [];
+        let currentCardIndex = 0;
+        let advice = null;
+        let isFetchingAdvice = false;
+        let selectedPathId = null;
+
         async function getAdvice() {
+            // Prevent duplicate fetches
+            if (isFetchingAdvice) {
+                return;
+            }
+
             const btn = document.getElementById('get-advice-btn');
             const message = document.getElementById('message');
-            const adviceContent = document.getElementById('advice-content');
+            const recommendationsSection = document.getElementById('recommendations-section');
+            const recommendationsContent = document.getElementById('recommendations-content');
+            const nextStrategySection = document.getElementById('next-strategy-section');
 
+            if (!btn || !recommendationsSection || !recommendationsContent || !nextStrategySection) {
+                console.error('Get Advice elements not found');
+                return;
+            }
+
+            isFetchingAdvice = true;
             btn.disabled = true;
             message.className = 'message';
-            adviceContent.innerHTML = '<div class="loading">Getting advice...</div>';
+            
+            // Show loading state
+            recommendationsSection.style.display = 'block';
+            recommendationsContent.innerHTML = '<div class="loading">Getting recommendations...</div>';
+            nextStrategySection.style.display = 'block';
+            nextStrategySection.style.visibility = 'visible';
+            nextStrategySection.innerHTML = '<h2>Next Action</h2><div class="loading">Getting next action...</div>';
 
             try {
-                const response = await fetch(`${API_URL}/advice`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to get advice');
+                // Fetch options first
+                const optionsRes = await fetch(`${API_URL}/advice/options`);
+                
+                if (!optionsRes.ok) {
+                    throw new Error('Failed to get options');
                 }
 
-                const data = await response.json();
-                displayAdvice(data.items);
+                const optionsData = await optionsRes.json();
+                
+                // Set default selectedPathId to recommended_id
+                if (selectedPathId === null && optionsData.recommended_id) {
+                    selectedPathId = optionsData.recommended_id;
+                }
+                
+                // Fetch next action with selected path
+                const nextUrl = selectedPathId 
+                    ? `${API_URL}/advice/next?path_id=${encodeURIComponent(selectedPathId)}`
+                    : `${API_URL}/advice/next`;
+                const nextRes = await fetch(nextUrl);
+                
+                if (!nextRes.ok) {
+                    throw new Error('Failed to get next action');
+                }
+                
+                const nextData = await nextRes.json();
+                
+                console.log("advice_options", optionsData);
+                console.log("advice_next", nextData);
+                
+                // Render options (3 cards) with selected state
+                displayOptions(optionsData);
+                
+                // Render next action
+                advice = nextData;
+                setAdvice(nextData);
+                
                 message.className = 'message show';
                 message.textContent = 'Advice loaded successfully!';
             } catch (error) {
                 console.error('Failed to get advice:', error);
-                adviceContent.innerHTML = '<p class="placeholder">Failed to load advice. Please try again.</p>';
+                if (recommendationsSection) {
+                    recommendationsSection.style.display = 'block';
+                    recommendationsContent.innerHTML = '<p class="placeholder">Failed to load options. Please try again.</p>';
+                }
+                if (nextStrategySection) {
+                    nextStrategySection.style.display = 'block';
+                    nextStrategySection.style.visibility = 'visible';
+                    nextStrategySection.innerHTML = '<h2>Next Action</h2><div><p class="placeholder">Failed to load next action. Please try again.</p></div>';
+                }
                 message.className = 'message error show';
                 message.textContent = 'Error loading advice';
             } finally {
                 btn.disabled = false;
+                isFetchingAdvice = false;
             }
         }
 
-        function displayAdvice(items) {
-            const content = document.getElementById('advice-content');
+        function setAdvice(data) {
+            // Normalize API data: ensure bullets is always an array
+            if (data) {
+                if (data.primary && (data.primary.bullets === null || data.primary.bullets === undefined)) {
+                    data.primary.bullets = [];
+                }
+                if (data.why && (data.why.bullets === null || data.why.bullets === undefined)) {
+                    data.why.bullets = [];
+                }
+                if (data.prep && (data.prep.bullets === null || data.prep.bullets === undefined)) {
+                    data.prep.bullets = [];
+                }
+            }
+            advice = data;
+            renderAdvice();
+        }
 
-            if (!items || items.length === 0) {
-                content.innerHTML = '<p class="placeholder">No advice available</p>';
+        function renderAdvice() {
+            console.log("renderAdvice()", advice);
+            
+            const container = document.getElementById('next-strategy-section');
+            
+            if (!container) {
+                console.error('Advice container element not found');
                 return;
             }
+
+            // Make sure container is visible
+            container.style.display = 'block';
+            container.style.visibility = 'visible';
+
+            // Ensure at least primary card exists
+            if (!advice || !advice.primary || !advice.primary.title) {
+                container.innerHTML = '<h2>Next Action</h2><div><p class="placeholder">No advice available</p></div>';
+                return;
+            }
+
+            // Helper to safely get bullets array (normalized, always returns array)
+            const getBullets = (card) => {
+                if (!card) return [];
+                if (card.bullets === null || card.bullets === undefined) return [];
+                return Array.isArray(card.bullets) ? card.bullets : [];
+            };
+
+            // Helper to safely get do_this_next (treat null/undefined as '')
+            const getDoThisNext = (card) => {
+                if (!card) return '';
+                return card.do_this_next || '';
+            };
+
+            // Render card helper - safely handles missing/null fields
+            const renderCard = (card, isPrimary = false) => {
+                if (!card || !card.title) return '';
+                
+                const title = card.title || '';
+                const doThisNext = getDoThisNext(card);
+                const bullets = getBullets(card);
+                const alternates = card.alternates || [];
+                
+                const borderColor = isPrimary ? '#4a5568' : '#cbd5e0';
+                const titleColor = isPrimary ? '#2d3748' : '#4a5568';
+                const titleSize = isPrimary ? '1.1rem' : '1rem';
+                
+                const doThisNextHtml = doThisNext 
+                    ? `<p style="margin: 0; color: #333; line-height: 1.5; font-weight: 500;">Do this next: ${doThisNext}</p>`
+                    : '';
+                
+                const bulletsHtml = bullets.length > 0
+                    ? `<ul style="margin: 8px 0; margin-left: 20px; padding: 0; list-style: disc;">${bullets.map(b => `<li style="margin: 4px 0; color: #555;">${b}</li>`).join('')}</ul>`
+                    : '';
+                
+                // Render alternates (only for primary card)
+                const alternatesHtml = (isPrimary && alternates.length > 0)
+                    ? `<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0;">
+                        <div style="font-size: 0.85rem; color: #718096; margin-bottom: 8px; font-weight: 600;">Alternate spots:</div>
+                        <ul style="margin: 0; padding-left: 20px; list-style: disc;">
+                            ${alternates.map(alt => {
+                                const tagsHtml = alt.tags && alt.tags.length > 0
+                                    ? ` <span style="display: inline-flex; gap: 4px; margin-left: 6px;">${alt.tags.map(tag => `<span style="background: #e2e8f0; color: #4a5568; padding: 2px 6px; border-radius: 8px; font-size: 0.7rem;">${tag}</span>`).join('')}</span>`
+                                    : '';
+                                const reqHtml = alt.requirements
+                                    ? ` <span style="color: #a0aec0; font-size: 0.75rem;">(${alt.requirements})</span>`
+                                    : '';
+                                return `<li style="margin: 4px 0; color: #555; line-height: 1.4;">
+                                    <strong>${alt.name}</strong>: ${alt.reason}${reqHtml}${tagsHtml}
+                                </li>`;
+                            }).join('')}
+                        </ul>
+                       </div>`
+                    : '';
+                
+                const hasContent = doThisNext || bullets.length > 0 || alternatesHtml;
+                const marginBottom = hasContent ? '10px' : '0';
+                
+                return `
+                    <div class="strategy-card" style="background: #f7fafc; border: ${isPrimary ? '2px' : '1px'} solid ${borderColor}; border-radius: 6px; padding: 16px;">
+                        <h${isPrimary ? '3' : '4'} style="color: ${titleColor}; margin: 0 0 ${marginBottom} 0; font-size: ${titleSize}; font-weight: 600;">${title}</h${isPrimary ? '3' : '4'}>
+                        ${doThisNextHtml}
+                        ${bulletsHtml}
+                        ${alternatesHtml}
+                    </div>
+                `;
+            };
+
+            // Safely render cards - skip missing sections
+            const prepCard = advice.prep ? renderCard(advice.prep) : '';
+            const primaryCard = renderCard(advice.primary, true); // Always render primary
+            const whyCard = advice.why ? renderCard(advice.why) : '';
+
+            // Render cards in order: Prep, Primary, Why (filter out empty strings)
+            const cards = [prepCard, primaryCard, whyCard].filter(card => card !== '');
+            
+            container.innerHTML = `
+                <h2>Next Action</h2>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    ${cards.join('')}
+                </div>
+            `;
+        }
+
+        function displayBeginnerPath() {
+            const content = document.getElementById('advice-content');
+            const adviceSection = document.getElementById('advice-display-section');
+            
+            if (!beginnerCards || beginnerCards.length === 0) {
+                adviceSection.style.display = 'none';
+                return;
+            }
+
+            // Show section when there's content
+            adviceSection.style.display = 'block';
+            
+            const card = beginnerCards[currentCardIndex];
+            const isFirst = currentCardIndex === 0;
+            const isLast = currentCardIndex === beginnerCards.length - 1;
+            
+            content.innerHTML = `
+                <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #4a5568;">
+                    <strong>Do steps in order unless marked Optional</strong>
+                </div>
+                <div class="beginner-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; color: #2d3748;">${card.title}</h3>
+                        ${card.optional ? '<span style="background: #718096; color: white; padding: 6px 14px; border-radius: 6px; font-size: 0.875rem; font-weight: 600; min-width: 60px; text-align: center;">Optional</span>' : '<span style="background: #4a5568; color: white; padding: 6px 14px; border-radius: 6px; font-size: 0.875rem; font-weight: 600; min-width: 60px; text-align: center;">Required</span>'}
+                    </div>
+                    <div style="background: #f7fafc; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                        <strong style="color: #555;">Why:</strong>
+                        <p style="margin-top: 8px; color: #333; line-height: 1.6;">${card.why_now}</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #555;">Action:</strong>
+                        <p style="margin-top: 8px; color: #333; line-height: 1.6;">${card.action}</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #555;">Unlocks:</strong>
+                        <p style="margin-top: 8px; color: #333; line-height: 1.6;">${card.next_unlock}</p>
+                    </div>
+                    ${card.details ? `
+                        <details style="margin-bottom: 15px;">
+                            <summary style="cursor: pointer; color: #4a5568; font-weight: 600; padding: 10px; background: #f7fafc; border-radius: 6px; user-select: none;">
+                                Details (click to expand)
+                            </summary>
+                            <div style="padding: 15px; background: #f7fafc; border-radius: 6px; margin-top: 10px; color: #333; line-height: 1.6;">
+                                ${card.details}
+                            </div>
+                        </details>
+                    ` : ''}
+                    <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 20px;">
+                        <button 
+                            onclick="previousCard()" 
+                            ${isFirst ? 'disabled' : ''}
+                            style="padding: 10px 20px; background: ${isFirst ? '#ccc' : '#4a5568'}; color: white; border: none; border-radius: 6px; cursor: ${isFirst ? 'not-allowed' : 'pointer'}; font-weight: 600; flex: 1; height: 40px; min-height: 40px;"
+                        >
+                            ← Back
+                        </button>
+                        <div style="flex: 1; text-align: center; padding: 10px; color: #666; font-size: 0.9rem;">
+                            ${currentCardIndex + 1} / ${beginnerCards.length}
+                        </div>
+                        <button 
+                            onclick="nextCard()" 
+                            ${isLast ? 'disabled' : ''}
+                            style="padding: 10px 20px; background: ${isLast ? '#ccc' : '#4a5568'}; color: white; border: none; border-radius: 6px; cursor: ${isLast ? 'not-allowed' : 'pointer'}; font-weight: 600; flex: 1; height: 40px; min-height: 40px;"
+                        >
+                            Next →
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function nextCard() {
+            if (currentCardIndex < beginnerCards.length - 1) {
+                currentCardIndex++;
+                displayBeginnerPath();
+            }
+        }
+
+        function previousCard() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                displayBeginnerPath();
+            }
+        }
+
+        async function selectPath(pathId) {
+            selectedPathId = pathId;
+            
+            // Update visual highlight
+            const cards = document.querySelectorAll('.advice-card');
+            cards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            const selectedCard = document.querySelector(`[data-path-id="${pathId}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+            
+            // Fetch and render next action
+            try {
+                const nextRes = await fetch(`${API_URL}/advice/next?path_id=${encodeURIComponent(pathId)}`);
+                if (!nextRes.ok) {
+                    throw new Error('Failed to get next action');
+                }
+                const nextData = await nextRes.json();
+                advice = nextData;
+                setAdvice(nextData);
+            } catch (error) {
+                console.error('Failed to fetch next action:', error);
+            }
+        }
+
+        function displayOptions(optionsData) {
+            const content = document.getElementById('recommendations-content');
+            const section = document.getElementById('recommendations-section');
+            
+            if (!content || !section) {
+                console.error('Recommendations elements not found');
+                return;
+            }
+            
+            if (!optionsData || !optionsData.options || optionsData.options.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            // Show section when there's content
+            section.style.display = 'block';
+            
+            const recommendedId = optionsData.recommended_id || '';
+            
+            const cards = optionsData.options.map(option => {
+                const isRecommended = option.id === recommendedId;
+                // Only select if selectedPathId matches (don't fall back to recommendedId)
+                const isSelected = selectedPathId !== null && option.id === selectedPathId;
+                const tagsHtml = option.tags && option.tags.length > 0
+                    ? `<div style="margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                        ${option.tags.map(tag => `<span style="background: #e2e8f0; color: #4a5568; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 500;">${tag}</span>`).join('')}
+                       </div>`
+                    : '';
+                
+                const whyBulletsHtml = option.why_bullets && option.why_bullets.length > 0
+                    ? `<ul style="margin: 10px 0; margin-left: 20px; padding: 0; list-style: disc;">
+                        ${option.why_bullets.map(bullet => `<li style="margin: 4px 0; color: #555;">${bullet}</li>`).join('')}
+                       </ul>`
+                    : '';
+                
+                const cursorStyle = 'cursor: pointer;';
+                
+                return `
+                    <div class="advice-card${isSelected ? ' selected' : ''}" 
+                         data-path-id="${option.id}"
+                         onclick="selectPath('${option.id}')"
+                         style="background: #f7fafc; border: 1px solid #cbd5e0; border-radius: 8px; padding: 20px; ${cursorStyle} transition: all 0.2s;">
+                        ${isRecommended ? '<div style="background: #4a5568; color: white; padding: 6px 14px; border-radius: 6px; font-size: 0.875rem; font-weight: 600; display: inline-block; margin-bottom: 12px; min-width: 60px; text-align: center;">Recommended</div>' : ''}
+                        <h3 style="color: #333; margin: ${isRecommended ? '8px' : '0'} 0 10px 0; font-size: 1.2rem; font-weight: 600;">${option.title}</h3>
+                        <p style="color: #4a5568; margin: 0 0 12px 0; line-height: 1.5;">${option.summary}</p>
+                        <div style="background: white; padding: 12px; border-left: 3px solid #4a5568; border-radius: 4px; margin: 12px 0;">
+                            <strong style="color: #333; display: block; margin-bottom: 6px;">Do this next:</strong>
+                            <p style="margin: 0; color: #555; line-height: 1.5;">${option.do_this_next}</p>
+                        </div>
+                        ${whyBulletsHtml}
+                        ${tagsHtml}
+                    </div>
+                `;
+            }).join('');
+            
+            content.innerHTML = `<div class="advice-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 15px;">${cards}</div>`;
+        }
+
+        function displayRecommendations(items) {
+            const content = document.getElementById('recommendations-content');
+            const section = document.getElementById('recommendations-section');
+            
+            if (!content || !section) {
+                console.error('Recommendations elements not found');
+                return;
+            }
+            
+            if (!items || items.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            // Show section when there's content
+            section.style.display = 'block';
 
             const cards = items.map(item => {
                 // Check if this is a loadout recommendation
@@ -732,6 +1581,9 @@
                     return processedStep;
                 });
                 
+                // Process steps for display
+                const processedStepsForDisplay = processedSteps;
+                
                 return `
                     <div class="advice-card">
                         <h3>${item.title}</h3>
@@ -741,7 +1593,7 @@
                         <div class="steps">
                             <strong>Steps:</strong>
                             <ol>
-                                ${processedSteps.map(step => `<li>${step}</li>`).join('')}
+                                ${processedStepsForDisplay.map(step => `<li>${step}</li>`).join('')}
                             </ol>
                         </div>
                         ${item.why_over_alternatives ? `
@@ -753,7 +1605,90 @@
                 `;
             }).join('');
 
+            content.innerHTML = `<div class="advice-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 15px;">${cards}</div>`;
+        }
+
+        function displayAdvice(items) {
+            // Alias for displayRecommendations to maintain compatibility
+            displayRecommendations(items);
+        }
+
+        function displayStrategies(strategies) {
+            const content = document.getElementById('advice-content');
+            const titleElement = document.getElementById('advice-section-title');
+            const adviceSection = document.getElementById('advice-display-section');
+
+            if (!strategies || strategies.length === 0) {
+                if (adviceSection) {
+                    adviceSection.style.display = 'none';
+                }
+                return;
+            }
+
+            // Show section when there's content
+            if (adviceSection) {
+                adviceSection.style.display = 'block';
+            }
+            if (titleElement) {
+                titleElement.textContent = 'Strategies';
+            }
+
+            const cards = strategies.map(strategy => {
+                const unlockPathBtn = strategy.unlock_path_context ? 
+                    `<button class="strategy-btn" onclick="viewUnlockPath('${strategy.unlock_path_context}')">View Unlock Path</button>` : '';
+                
+                const buildBtn = strategy.build_context ? 
+                    `<button class="strategy-btn" onclick="viewBuild('${strategy.build_context}')">View Recommended Build</button>` : '';
+
+                return `
+                    <div class="strategy-card">
+                        <h3>${strategy.title}</h3>
+                        <div class="strategy-why">
+                            <strong>Why this matters:</strong> ${strategy.why}
+                        </div>
+                        <div class="strategy-unlocks">
+                            <h4>What this unlocks:</h4>
+                            <ul>
+                                ${strategy.unlocks.map(unlock => `<li>${unlock}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ${strategy.next_actions && strategy.next_actions.length > 0 ? `
+                            <div class="strategy-actions">
+                                <h4>Next actions:</h4>
+                                <ul>
+                                    ${strategy.next_actions.map(action => `<li>${action}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        <div class="strategy-buttons">
+                            ${unlockPathBtn}
+                            ${buildBtn}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
             content.innerHTML = `<div class="advice-cards">${cards}</div>`;
+        }
+
+        function viewUnlockPath(context) {
+            // For now, show builds filtered by context
+            // In future, this could show a detailed unlock path
+            viewBuilds(context);
+        }
+
+        function viewBuild(context) {
+            // Show builds section and filter by context
+            const buildsSection = document.getElementById('builds-section');
+            const contextSelect = document.getElementById('build-context');
+            
+            if (contextSelect) {
+                contextSelect.value = context;
+            }
+            
+            buildsSection.style.display = 'block';
+            buildsSection.scrollIntoView({ behavior: 'smooth' });
+            viewBuilds();
         }
 
         async function showDetails(type, name) {
@@ -852,37 +1787,99 @@
                 return;
             }
 
-            const cards = builds.map(build => `
-                <div class="build-card">
+            const cards = builds.map((build, index) => {
+                const selectedId = build.default_gear_option_id || (build.gear_options && build.gear_options[0]?.id) || 'progression';
+                const selected = (build.gear_options || []).find(o => o.id === selectedId) || (build.gear_options || [])[0];
+                const gear = (selected && selected.gear) || [];
+                const gearOptions = build.gear_options || [];
+
+                return `
+                <div class="build-card" data-build-index="${index}">
                     <h3>${build.name}</h3>
                     <div class="build-section">
                         <strong>Gear:</strong>
-                        <ul>
-                            ${build.gear.map(item => `<li>${item}</li>`).join('')}
+                        <div class="gear-options" style="margin: 8px 0; display: flex; gap: 8px; flex-wrap: wrap;">
+                            ${gearOptions.map(opt => `
+                                <button class="gear-option-pill ${opt.id === selectedId ? 'active' : ''}" 
+                                        onclick="selectGearOption(${index}, '${opt.id}')"
+                                        data-option-id="${opt.id}">
+                                    ${opt.id}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div id="gear-debug-${index}" style="margin: 8px 0; padding: 8px; background: #edf2f7; border-radius: 4px; font-size: 0.9rem;">
+                            Selected tier: ${selectedId}<br>
+                            Weapon: ${gear.length > 0 ? gear[0] : 'None'}
+                        </div>
+                        <ul id="gear-list-${index}">
+                            ${gear.map(item => `<li>${item}</li>`).join('')}
                         </ul>
                     </div>
                     <div class="build-section">
                         <strong>Inventory:</strong>
                         <ul>
-                            ${build.inventory.map(item => `<li>${item}</li>`).join('')}
+                            ${(build.inventory || []).map(item => `<li>${item}</li>`).join('')}
                         </ul>
                     </div>
                     <div class="build-section">
                         <strong>Prayers:</strong>
                         <ul>
-                            ${build.prayers.map(prayer => `<li>${prayer}</li>`).join('')}
+                            ${(build.prayers || []).map(prayer => `<li>${prayer}</li>`).join('')}
                         </ul>
                     </div>
                     <div class="build-section">
                         <strong>Notes:</strong>
                         <ul>
-                            ${build.notes.map(note => `<li>${note}</li>`).join('')}
+                            ${(build.notes || []).map(note => `<li>${note}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
+
+            // Store build data for gear option switching
+            if (!window.buildsData) {
+                window.buildsData = {};
+            }
+            builds.forEach((build, index) => {
+                window.buildsData[index] = build;
+            });
 
             content.innerHTML = cards;
+        }
+
+        function selectGearOption(buildIndex, optionId) {
+            const build = window.buildsData && window.buildsData[buildIndex];
+            if (!build || !build.gear_options) return;
+
+            const selected = build.gear_options.find(o => o.id === optionId);
+            if (!selected) return;
+
+            const gear = selected.gear || [];
+
+            // Update gear list
+            const gearList = document.getElementById(`gear-list-${buildIndex}`);
+            if (gearList) {
+                gearList.innerHTML = gear.map(item => `<li>${item}</li>`).join('');
+            }
+
+            // Update debug header
+            const debugHeader = document.getElementById(`gear-debug-${buildIndex}`);
+            if (debugHeader) {
+                debugHeader.innerHTML = `Selected tier: ${optionId}<br>Weapon: ${gear.length > 0 ? gear[0] : 'None'}`;
+            }
+
+            // Update active pill
+            const buildCard = document.querySelector(`[data-build-index="${buildIndex}"]`);
+            if (buildCard) {
+                buildCard.querySelectorAll('.gear-option-pill').forEach(pill => {
+                    if (pill.dataset.optionId === optionId) {
+                        pill.classList.add('active');
+                    } else {
+                        pill.classList.remove('active');
+                    }
+                });
+            }
         }
     </script>
 
